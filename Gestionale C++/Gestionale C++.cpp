@@ -38,19 +38,20 @@ static int Ricerca(string nome, string filePath)
     return posizione;
 }
 
-static void AggiuntaMenu(string dolceOrdinato, int& dim, fstream& ListaDolci, fstream& ListaDolciTemp, fstream& reader, string path, string pathTemp)
+static void AggiuntaMenu(string dolceOrdinato, int& dim, fstream& writer, fstream& reader, string path, string pathTemp, string pathDispensa)
 {
-    string line;
-    int N, scelta;
+    string line, line2, split;
+    int N, scelta, controllo = 0, min = 2000, max = 5000;
     prodotto p;
+    fstream dispensa;
     if (dim < 100)
     {
         //SALVATAGGIO DI DOLCE ED INGREDIENTI SU FILE TEMPORANEO
-        ListaDolciTemp.open(pathTemp, ios::out | ios::app);
+        writer.open(pathTemp, ios::out | ios::app);
         p.dolce = dolceOrdinato;
         cout << "Inserire il numero di ingredienti necessari: ";
         cin >> N;
-        ListaDolciTemp << p.dolce << ";";
+        writer << p.dolce << ";";
         for (int i = 1; i <= N; i++) {
             cout << "Inserire l'ingrediente " << i << ": ";
             cin >> p.ingrediente[i - 1];
@@ -64,42 +65,61 @@ static void AggiuntaMenu(string dolceOrdinato, int& dim, fstream& ListaDolci, fs
                 cout << "Input non valido!";
                 break;
             case 0:
-                ListaDolciTemp << p.ingrediente[i - 1] << " " << p.quantità[i - 1] << ";";
+                writer << p.ingrediente[i - 1] << " " << p.quantità[i - 1] << ";";
                 break;
             case 1:
-                ListaDolciTemp << p.ingrediente[i - 1] << " " << p.quantità[i - 1] << " g;";
+                writer << p.ingrediente[i - 1] << " " << p.quantità[i - 1] << " g;";
                 break;
             case 2:
-                ListaDolciTemp << p.ingrediente[i - 1] << " " << p.quantità[i - 1] << " ml;";
+                writer << p.ingrediente[i - 1] << " " << p.quantità[i - 1] << " ml;";
                 break;
             }
-        }
-        ListaDolciTemp << endl;
-        ListaDolciTemp.close();
 
-        //ESTRAZIONE DEL DOLCE E INGREDIENTI SU FILE HTML
-        ListaDolci.open(path, ios::out | ios::app);
-        reader.open(pathTemp, ios::in);
-        while (getline(reader, line))
-        {
-            string split = line.substr(0, line.find(";"));
-            ListaDolci << "<li> " << split << " </li>" << endl;
+            //SALVATAGGIO DEGLI INGREDIENTI SU DISPENSA
+            dispensa.open(pathDispensa, ios::out | ios::app);
+            reader.open(pathDispensa, ios::in);
+            controllo = 0;
+            while (getline(reader, line)) {
+                split = line.substr(0, line.find(" "));
+                if (split != p.ingrediente[i - 1])
+                    controllo += 0;
+                else
+                    controllo += 1;
+            }
+            if (controllo == 0 && scelta == 0)
+                dispensa << p.ingrediente[i - 1] << " " << (rand() % (max - min + 1)) + min << endl;
+            else if(controllo == 0 && scelta == 1)
+                dispensa << p.ingrediente[i - 1] << " " << (rand() % (max - min + 1)) + min << " g" << endl;
+            else if(controllo == 0 && scelta == 2)
+                dispensa << p.ingrediente[i - 1] << " " << (rand() % (max - min + 1)) + min << " ml" << endl;
+            reader.close();
+            dispensa.close();
         }
-        reader.close();
-        ListaDolci.close();
+        writer.close();
 
         //SALVATAGGIO DEI PROCEDIMENTI SU FILE TEMPORANEO
-        ListaDolciTemp.open(pathTemp, ios::out | ios::app);
+        writer.open(pathTemp, ios::out | ios::app);
         cout << "Inserire il numero di procedimenti necessari: ";
         cin >> N;
         for (int i = 1; i <= N; i++)
         {
             cout << "Inserire il " << i << " passaggio: ";
             cin >> p.procedimento[i - 1];
-            ListaDolciTemp << i << ". " << p.procedimento[i - 1] << ";";
+            writer << i << ". " << p.procedimento[i - 1] << ";";
         }
-        ListaDolciTemp << endl;
-        ListaDolciTemp.close();
+        writer << endl;
+        writer.close();
+
+        //ESTRAZIONE DEL DOLCE SU FILE HTML
+        writer.open(path, ios::out | ios::app);
+        reader.open(pathTemp, ios::in);
+        while (getline(reader, line))
+        {
+            split = line.substr(0, line.find(";"));
+            writer << "<li> " << split << " </li>" << endl;
+        }
+        reader.close();
+        writer.close();
         dim++;
     }
     else {
@@ -128,6 +148,61 @@ static void RicavaMenu(fstream& reader, string pathTemp) {
     }
     reader.close();
 }
+
+static void EliminaDolce(string dolceSelezionato, fstream& writer, fstream& reader, string pathTemp, string pathApp)
+{
+    string line;
+    writer.open(pathApp, ios::out | ios::app);
+    reader.open(pathTemp, ios::in);
+    while (getline(reader, line))
+    {
+        string split = line.substr(0, line.find(";"));
+        if (split != dolceSelezionato)
+        {
+            writer << line << endl;
+        }
+    }
+    reader.close();
+    writer.close();
+}
+static void ModificaDolce(string dolceSelezionato, string nuovoDolce, fstream& writer, fstream& reader, string pathTemp, string pathApp)
+{
+    string line;
+    writer.open(pathApp, ios::out | ios::app);
+    reader.open(pathTemp, ios::in);
+    while (getline(reader, line))
+    {
+        string split = line.substr(0, line.find(";"));
+        if (split != dolceSelezionato)
+        {
+            writer << line << endl;
+        }
+        else {
+            writer << nuovoDolce;
+            string split2 = line.substr(split.length());
+            writer << split2 << endl;
+        }
+    }
+    reader.close();
+    writer.close();
+}
+
+static void Sostituzione(string appoggio, string vecchio) {
+    remove(vecchio.c_str());
+    if (rename(appoggio.c_str(), vecchio.c_str()) == 0)
+        cout << "Elemento cancellato/modificato con successo!" << endl;
+    else
+        perror("Error renaming file");
+}
+
+
+/*
+string Spaziatura(string input) {
+    input.replace(input.find("-"), 1, " ");
+    return input;
+}
+*/
+
 //
 
 static void StampaProcedimento(string dolceOrdinato, fstream& ricetteOrdini, string pathTemp, string pathOrdine)
@@ -180,80 +255,9 @@ static void StampaProcedimento(string dolceOrdinato, fstream& ricetteOrdini, str
     _getch();
     reader.close();
 }
-static void EliminaDolce(string dolceSelezionato, fstream& output, string nome_file_mod)
-{
-    string nome_file = "ListaDolci.csv", line, nome_file2 = "RicettarioGenerale.csv", ricettarioMom = "RicettarioMomentaneo.csv";
-    fstream input, input2, output2;
-    input.open(nome_file, ios::in);
-    while (getline(input, line))
-    {
-        string split = line.substr(0, line.find(";"));
-        if (split != dolceSelezionato)
-        {
-            output << line << endl;
-        }
-    }
-    input.close();
-    output2.open(ricettarioMom, ios::out);
-    input2.open(nome_file2, ios::in);
-    while (getline(input2, line))
-    {
-        string split = line.substr(0, line.find(";"));
-        if (split != dolceSelezionato)
-        {
-            output2 << line << endl;
-        }
-    }
-    input2.close();
-    output2.close();
-}
-static void ModificaDolce(string dolceSelezionato, string nuovoDolce, fstream& output, string nome_file_mod)
-{
-    string nome_file = "ListaDolci.csv", line, rcg = "RicettarioGenerale.csv", nome_file_mod2 = "RicettarioMomentaneo.csv";
-    fstream input, input2, output2;
-    int indice = 1;
-    prodotto p;
-    input.open(nome_file, ios::in);
-    while (getline(input, line))
-    {
-        string split = line.substr(0, line.find(";"));
-        if (split != dolceSelezionato)
-        {
-            output << line << endl;
-        }
-        else {
-            output << nuovoDolce;
-            string split2 = line.substr(split.length());
-            output << split2 << endl;
-        }
-    }
-    input.close();
 
-    output2.open(nome_file_mod2, ios::out);
-    input2.open(rcg, ios::in);
-    while (getline(input2, line))
-    {
-        string split = line.substr(0, line.find(";"));
-        if (split != dolceSelezionato)
-        {
-            output2 << line << endl;
-        }
-        else {
-            output2 << nuovoDolce;
-            string split2 = line.substr(split.length());
-            output2 << split2 << endl;
-        }
-    }
-    input2.close();
-    output2.close();
-}
-static void Sostituzione(string appoggio, string vecchio) {
-    remove(vecchio.c_str());
-    if (rename(appoggio.c_str(), vecchio.c_str()) == 0)
-        cout << "File renamed successfully" << endl;
-    else
-        perror("Error renaming file");
-}
+
+
 #pragma endregion
 
 int main()
@@ -261,9 +265,9 @@ int main()
     int scelta, dim = 0, r;
     bool c = false;
     char uscita;
-    string dolce;
-    string path = "ListaDolci.html", pathTemp = "ListaDolciTemp.csv", pathOrdine = "RicetteOrdine.csv";
-    fstream ListaDolci, ListaDolciTemp, reader, ricetteOrdini;
+    string dolce, nuovoDolce;
+    string path = "ListaDolci.html", pathTemp = "ListaDolciTemp.csv", pathApp = "ListaDolciApp.csv", pathOrdine = "RicetteOrdine.csv", pathDispensa ="Dispensa.csv";
+    fstream ListaDolci, ListaDolciTemp, reader, ricetteOrdini, writer;
     do {
         system("CLS");
         cout << "1 - Aggiunta dolce\n2 - Ordinazione\n3 - Elimina dolce\n4 - Modifica dolce\n5 - Visualizza Dispensa\n0 - Uscita\n" << endl;
@@ -281,8 +285,9 @@ int main()
             cout << "Inserire il dolce: ";
             cin >> dolce;
             dolce[0] = toupper(dolce[0]);
+            //dolce = Spaziatura(dolce);
             htmlI(ListaDolci, path);
-            AggiuntaMenu(dolce, dim, ListaDolci, ListaDolciTemp, reader, path, pathTemp);
+            AggiuntaMenu(dolce, dim, writer, reader, path, pathTemp, pathDispensa);
             htmlF(ListaDolci, path);
             break;
         case 2:
@@ -314,6 +319,40 @@ int main()
                     uscita = toupper(uscita);
                 }
             } while (uscita != 'N');
+            break;
+        case 3:
+            system("CLS");
+            RicavaMenu(reader, pathTemp);
+            cout << "Inserire il dolce che si desidera eliminare: ";
+            cin >> dolce;
+            dolce[0] = toupper(dolce[0]);
+            r = Ricerca(dolce, pathTemp);
+            if (r == -1) {
+                cout << "Dolce non trovato!" << endl;
+            }
+            else {
+                
+                EliminaDolce(dolce, writer, reader, pathTemp, pathApp);
+                Sostituzione(pathApp, pathTemp);
+            }
+            break;
+        case 4:
+            system("CLS");
+            RicavaMenu(reader, pathTemp);
+            cout << "Inserire il dolce che si desidera modificare: ";
+            cin >> dolce;
+            dolce[0] = toupper(dolce[0]);
+            r = Ricerca(dolce, pathTemp);
+            if (r == -1) {
+                cout << "Dolce non trovato!" << endl;
+            }
+            else {
+                cout << "Inserire il nuovo dolce: ";
+                cin >> nuovoDolce;
+                nuovoDolce[0] = toupper(nuovoDolce[0]);
+                ModificaDolce(dolce, nuovoDolce, writer, reader, pathTemp, pathApp);
+                Sostituzione(pathApp, pathTemp);
+            }
             break;
         }
         cout << "Premere un tasto per continuare...";
