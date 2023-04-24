@@ -55,6 +55,7 @@ static void AggiuntaMenu(string dolceOrdinato, int& dim, fstream& writer, fstrea
         for (int i = 1; i <= N; i++) {
             cout << "Inserire l'ingrediente " << i << ": ";
             cin >> p.ingrediente[i - 1];
+            p.ingrediente[i-1][0] = toupper(p.ingrediente[i - 1][0]);
             cout << "Inserire la quantita di quell'ingrediente: ";
             cin >> p.quantità[i - 1];
             cout << "Seleziona l'unita di misura del " << i << " ingrediente (0 - no unita misura / 1 - g / 2 - ml): ";
@@ -204,6 +205,16 @@ string Spaziatura(string input) {
 */
 
 //
+static void Ordinazione() {
+    fstream reader;
+    string line;
+    prodotto p;
+    reader.open("ListaDolciTemp", ios::in);
+    getline(reader, line);
+    cout <<"";
+    cout << "Premere un tasto per continuare...";
+    _getch();
+}
 
 static void StampaProcedimento(string dolceOrdinato, fstream& ricetteOrdini, string pathTemp, string pathOrdine)
 {
@@ -292,8 +303,8 @@ int main()
             break;
         case 2:
             remove("RicetteOrdine.csv");
-            do
-            {
+            //do
+            //{
                 system("CLS");
                 RicavaMenu(reader, pathTemp);
                 cout << "Inserire il dolce che si vuole ordinare: ";
@@ -306,8 +317,10 @@ int main()
                 }
                 else {
                     system("CLS");
-                    StampaProcedimento(dolce, ricetteOrdini, pathTemp, pathOrdine);
+                    Ordinazione();
+                    //StampaProcedimento(dolce, ricetteOrdini, pathTemp, pathOrdine);
                 }
+                /*
                 system("CLS");
                 cout << "Inserire un altro dolce? (Y/N) ";
                 cin >> uscita;
@@ -318,7 +331,9 @@ int main()
                     cin >> uscita;
                     uscita = toupper(uscita);
                 }
-            } while (uscita != 'N');
+                */
+                
+            //} while (uscita != 'N');
             break;
         case 3:
             system("CLS");
