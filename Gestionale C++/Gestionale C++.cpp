@@ -38,11 +38,11 @@ static int Ricerca(string nome, string filePath)
     return posizione;
 }
 
-static void AggiuntaMenu(string dolceOrdinato, int& dim, fstream& writer, fstream& reader, string path, string pathTemp, string pathDispensa)
+static void AggiuntaMenu(string dolceOrdinato, int& dim, fstream& writer, fstream& reader, string path, string pathTemp, string pathDispensa, prodotto p)
 {
     string line, line2, split;
     int N, scelta, controllo = 0, min = 2000, max = 5000;
-    prodotto p;
+    
     fstream dispensa;
     if (dim < 100)
     {
@@ -88,7 +88,7 @@ static void AggiuntaMenu(string dolceOrdinato, int& dim, fstream& writer, fstrea
                     controllo += 1;
             }
             if (controllo == 0 && scelta == 0)
-                dispensa << p.ingrediente[i - 1] << " " << (rand() % (max - min + 1)) + min << endl;
+                dispensa << p.ingrediente[i - 1] << " " << (rand() % (100 - 10 + 1)) + 10 << endl;
             else if(controllo == 0 && scelta == 1)
                 dispensa << p.ingrediente[i - 1] << " " << (rand() % (max - min + 1)) + min << " g" << endl;
             else if(controllo == 0 && scelta == 2)
@@ -205,15 +205,23 @@ string Spaziatura(string input) {
 */
 
 //
-static void Ordinazione() {
+static void Ordinazione(prodotto p, string dolce) {
     fstream reader;
     string line;
-    prodotto p;
+    int controllo = 1, i = 0;
     reader.open("ListaDolciTemp", ios::in);
-    getline(reader, line);
-    cout <<"";
-    cout << "Premere un tasto per continuare...";
-    _getch();
+    while (getline(reader, line))
+    {
+        if (line.find(dolce) != string::npos)
+        {
+                while (controllo != 0) {
+                    
+                    cout << p.quantità[i];
+                    i++;
+                }
+
+        }
+    }
 }
 
 static void StampaProcedimento(string dolceOrdinato, fstream& ricetteOrdini, string pathTemp, string pathOrdine)
@@ -231,40 +239,19 @@ static void StampaProcedimento(string dolceOrdinato, fstream& ricetteOrdini, str
             {
                 int fine = line.find(";", inizio + 1); // Trova il prossimo carattere ";" nella riga
                 string sottostringa = line.substr(inizio + 1, fine - inizio - 1); // Estrae la sottostringa tra i due caratteri ";"
+                if (sottostringa.find("1.") != string::npos) {
+                    cout << endl << "Procedimenti: " << endl << endl;
+                }
                 cout << sottostringa << endl;
                 inizio = fine;
+
             }
         }
     }
     readering.close();
     _getch();
-    system("CLS");
-    readering.close();
-    cout << "Procedimento:" << endl << endl;
-
-    ricetteOrdini.open(pathOrdine, ios::out | ios::app);
-    reader.open(pathTemp, ios::in);
-    while (getline(reader, line))
-    {
-        if (line.find(dolceOrdinato) != string::npos)
-        {
-            while (getline(reader, line))
-            {
-                int inizio = line.find("1."); // Trova il primo carattere ";" nella riga
-                while (inizio != string::npos)
-                {
-                    int fine = line.find(";", inizio + 1); // Trova il prossimo carattere ";" nella riga
-                    string sottostringa = line.substr(inizio + 1, fine - inizio - 1); // Estrae la sottostringa tra i due caratteri ";"
-                    ricetteOrdini << sottostringa << endl;
-                    inizio = fine;
-                }
-            }
-        }
-    }
     reader.close();
     ricetteOrdini.close();
-    _getch();
-    reader.close();
 }
 
 
@@ -273,12 +260,13 @@ static void StampaProcedimento(string dolceOrdinato, fstream& ricetteOrdini, str
 
 int main()
 {
-    int scelta, dim = 0, r;
+    int scelta, dim = 0, r, q;
     bool c = false;
     char uscita;
     string dolce, nuovoDolce;
     string path = "ListaDolci.html", pathTemp = "ListaDolciTemp.csv", pathApp = "ListaDolciApp.csv", pathOrdine = "RicetteOrdine.csv", pathDispensa ="Dispensa.csv";
     fstream ListaDolci, ListaDolciTemp, reader, ricetteOrdini, writer;
+    prodotto p;
     do {
         system("CLS");
         cout << "1 - Aggiunta dolce\n2 - Ordinazione\n3 - Elimina dolce\n4 - Modifica dolce\n5 - Visualizza Dispensa\n0 - Uscita\n" << endl;
@@ -298,7 +286,7 @@ int main()
             dolce[0] = toupper(dolce[0]);
             //dolce = Spaziatura(dolce);
             htmlI(ListaDolci, path);
-            AggiuntaMenu(dolce, dim, writer, reader, path, pathTemp, pathDispensa);
+            AggiuntaMenu(dolce, dim, writer, reader, path, pathTemp, pathDispensa, p);
             htmlF(ListaDolci, path);
             break;
         case 2:
@@ -310,6 +298,8 @@ int main()
                 cout << "Inserire il dolce che si vuole ordinare: ";
                 cin >> dolce;
                 dolce[0] = toupper(dolce[0]);
+                cout << "Inserire la quantità di dolci: ";
+                cin >> q;
                 r = Ricerca(dolce, pathTemp);
                 if (r == -1) {
                     cout << "Dolce non trovato!" << endl;
@@ -317,8 +307,8 @@ int main()
                 }
                 else {
                     system("CLS");
-                    Ordinazione();
-                    //StampaProcedimento(dolce, ricetteOrdini, pathTemp, pathOrdine);
+                    Ordinazione(p);
+                    StampaProcedimento(dolce, ricetteOrdini, pathTemp, pathOrdine);
                 }
                 /*
                 system("CLS");
