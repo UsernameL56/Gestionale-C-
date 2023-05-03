@@ -14,6 +14,8 @@ struct prodotto
     int indice = 0;
     int quantità[100];
 };
+
+prodotto p;
 #pragma region Funzioni
 
 //
@@ -38,7 +40,7 @@ static int Ricerca(string nome, string filePath)
     return posizione;
 }
 
-static void AggiuntaMenu(string dolceOrdinato, int& dim, fstream& writer, fstream& reader, string path, string pathTemp, string pathDispensa, prodotto p)
+static void AggiuntaMenu(string dolceOrdinato, int& dim, fstream& writer, fstream& reader, string path, string pathTemp, string pathDispensa)
 {
     string line, line2, split;
     int N, scelta, controllo = 0, min = 2000, max = 5000;
@@ -205,23 +207,40 @@ string Spaziatura(string input) {
 */
 
 //
-static void Ordinazione(prodotto p, string dolce) {
+static void Ordinazione(string dolce, int quantita, string pathTemp) {
+    string line, sep = ";";
+    int indice = 0;
     fstream reader;
-    string line;
-    int controllo = 1, i = 0;
-    reader.open("ListaDolciTemp", ios::in);
+
+    reader.open(pathTemp, ios::in);
     while (getline(reader, line))
     {
         if (line.find(dolce) != string::npos)
         {
-                while (controllo != 0) {
-                    
-                    cout << p.quantità[i];
-                    i++;
+            int inizio = line.find(";"); // Trova il primo carattere ";" nella riga
+            while (inizio != string::npos)
+            {
+                int fine = line.find(";", inizio + 1); // Trova il prossimo carattere ";" nella riga
+                string sottostringa = line.substr(inizio + 1, fine - inizio - 1); // Estrae la sottostringa tra i due caratteri ";"
+                if (sottostringa.find("1.") != string::npos) {
+                    break;
                 }
+                else {
+                    int inizio2 = sottostringa.find(" "); // Trova il primo carattere ";" nella riga
+                    int fine2 = sottostringa.find(" ", inizio2 + 1); // Trova il prossimo carattere ";" nella riga
+                    string sottostringa2 = sottostringa.substr(inizio2 + 1, fine2 - inizio2 - 1); // Estrae la sottostringa tra i due caratteri ";"
+                    int num = stoi(sottostringa2);
+                    int prodotto = num * quantita;
+                    cout << prodotto << endl;
+                    inizio2 = fine2;
+                }    
+                inizio = fine;
 
+            }
         }
     }
+    _getch();
+    reader.close();
 }
 
 static void StampaProcedimento(string dolceOrdinato, fstream& ricetteOrdini, string pathTemp, string pathOrdine)
@@ -266,7 +285,6 @@ int main()
     string dolce, nuovoDolce;
     string path = "ListaDolci.html", pathTemp = "ListaDolciTemp.csv", pathApp = "ListaDolciApp.csv", pathOrdine = "RicetteOrdine.csv", pathDispensa ="Dispensa.csv";
     fstream ListaDolci, ListaDolciTemp, reader, ricetteOrdini, writer;
-    prodotto p;
     do {
         system("CLS");
         cout << "1 - Aggiunta dolce\n2 - Ordinazione\n3 - Elimina dolce\n4 - Modifica dolce\n5 - Visualizza Dispensa\n0 - Uscita\n" << endl;
@@ -286,7 +304,7 @@ int main()
             dolce[0] = toupper(dolce[0]);
             //dolce = Spaziatura(dolce);
             htmlI(ListaDolci, path);
-            AggiuntaMenu(dolce, dim, writer, reader, path, pathTemp, pathDispensa, p);
+            AggiuntaMenu(dolce, dim, writer, reader, path, pathTemp, pathDispensa);
             htmlF(ListaDolci, path);
             break;
         case 2:
@@ -307,7 +325,7 @@ int main()
                 }
                 else {
                     system("CLS");
-                    Ordinazione(p);
+                    Ordinazione( dolce, q, pathTemp);
                     StampaProcedimento(dolce, ricetteOrdini, pathTemp, pathOrdine);
                 }
                 /*
