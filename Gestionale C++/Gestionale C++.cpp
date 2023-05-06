@@ -57,7 +57,7 @@ static void AggiuntaMenu(string dolceOrdinato, int& dim, fstream& writer, fstrea
         for (int i = 1; i <= N; i++) {
             cout << "Inserire l'ingrediente " << i << ": ";
             cin >> p.ingrediente[i - 1];
-            p.ingrediente[i-1][0] = toupper(p.ingrediente[i - 1][0]);
+            p.ingrediente[i - 1][0] = toupper(p.ingrediente[i - 1][0]);
             cout << "Inserire la quantita di quell'ingrediente: ";
             cin >> p.quantità[i - 1];
             cout << "Seleziona l'unita di misura del " << i << " ingrediente (0 - no unita misura / 1 - g / 2 - ml): ";
@@ -90,11 +90,11 @@ static void AggiuntaMenu(string dolceOrdinato, int& dim, fstream& writer, fstrea
                     controllo += 1;
             }
             if (controllo == 0 && scelta == 0)
-                dispensa << p.ingrediente[i - 1] << " " << (rand() % (100 - 10 + 1)) + 10 << endl;
-            else if(controllo == 0 && scelta == 1)
-                dispensa << p.ingrediente[i - 1] << " " << (rand() % (max - min + 1)) + min << " g" << endl;
-            else if(controllo == 0 && scelta == 2)
-                dispensa << p.ingrediente[i - 1] << " " << (rand() % (max - min + 1)) + min << " ml" << endl;
+                dispensa << p.ingrediente[i - 1] << " " << (rand() % (100 - 10 + 1)) + 10;
+            else if (controllo == 0 && scelta == 1)
+                dispensa << p.ingrediente[i - 1] << " " << (rand() % (max - min + 1)) + min << " g;";
+            else if (controllo == 0 && scelta == 2)
+                dispensa << p.ingrediente[i - 1] << " " << (rand() % (max - min + 1)) + min << " ml;";
             reader.close();
             dispensa.close();
         }
@@ -209,9 +209,9 @@ string Spaziatura(string input) {
 //
 static void Ordinazione(string dolce, int quantita, string pathTemp) {
     string line, sep = ";";
-    int indice = 0;
-    fstream reader;
-
+    int indice = 0,prodotto=0, prodotto2=0;
+    fstream reader, reader2;
+    string sottostringa3;
     reader.open(pathTemp, ios::in);
     while (getline(reader, line))
     {
@@ -226,14 +226,43 @@ static void Ordinazione(string dolce, int quantita, string pathTemp) {
                     break;
                 }
                 else {
-                    int inizio2 = sottostringa.find(" "); // Trova il primo carattere ";" nella riga
-                    int fine2 = sottostringa.find(" ", inizio2 + 1); // Trova il prossimo carattere ";" nella riga
-                    string sottostringa2 = sottostringa.substr(inizio2 + 1, fine2 - inizio2 - 1); // Estrae la sottostringa tra i due caratteri ";"
-                    int num = stoi(sottostringa2);
-                    int prodotto = num * quantita;
-                    cout << prodotto << endl;
+                    string ingrediente = line.substr(inizio+1, sottostringa.find(" "));
+                    cout << ingrediente;
+                    int inizio2 = sottostringa.find(" "); // Trova la quantità
+                    int fine2 = sottostringa.find(" ", inizio2 + 1); 
+                    string sottostringa2 = sottostringa.substr(inizio2 + 1, fine2 - inizio2 - 1);
+                    if (fine2 != -1) {
+                        sottostringa3 = sottostringa.substr(fine2 + 1);
+                        int num = stoi(sottostringa2);          //moltiplicare la quantità per il n di dolci ordinati
+                        int prodotto = num * quantita;
+                        cout << " " << prodotto << " " << sottostringa3 << endl;
+                    }
+                    else {
+                        int num = stoi(sottostringa2);          //moltiplicare la quantità per il n di dolci ordinati
+                        prodotto = num * quantita;
+                        cout << " " << prodotto << endl;
+                    }
+                    reader2.open("Dispensa.csv", ios::in);
+                    int inizio = line.find(";"); // Trova il primo carattere ";" nella riga
+                    while (inizio != string::npos)
+                    {
+                        int fine = line.find(";", inizio + 1); // Trova il prossimo carattere ";" nella riga
+                        string sottostringa = line.substr(inizio + 1, fine - inizio - 1); // Estrae la sottostringa tra i due caratteri ";"
+                        if (sottostringa.find("1.") != string::npos) {
+                            break;
+                        }
+                        else {
+                            int inizio2 = sottostringa.find(" "); // Trova la quantità
+                            int fine2 = sottostringa.find(" ", inizio2 + 1);
+                            string sottostringa2 = sottostringa.substr(inizio2 + 1, fine2 - inizio2 - 1);
+                            int num = stoi(sottostringa2);          //moltiplicare la quantità per il n di dolci ordinati
+                            prodotto2 = num - prodotto;
+                            cout << "NEW dispensa: " << prodotto2 << " " << endl;
+                    reader.close();
+
                     inizio2 = fine2;
-                }    
+                    
+                    }    
                 inizio = fine;
 
             }
@@ -327,6 +356,7 @@ int main()
                     system("CLS");
                     Ordinazione( dolce, q, pathTemp);
                     StampaProcedimento(dolce, ricetteOrdini, pathTemp, pathOrdine);
+                    cout << "dolce:" << p.dolce;
                 }
                 /*
                 system("CLS");
