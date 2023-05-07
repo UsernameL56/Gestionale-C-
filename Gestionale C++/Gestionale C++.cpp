@@ -313,9 +313,6 @@ static void StampaProcedimento(string dolceOrdinato, fstream& ricetteOrdini, str
     reader.close();
     ricetteOrdini.close();
 }
-
-
-
 #pragma endregion
 
 int main()
@@ -350,40 +347,37 @@ int main()
             break;
         case 2:
             remove("RicetteOrdine.csv");
-            //do
-            //{
-            system("CLS");
-            RicavaMenu(reader, pathTemp);
-            cout << "Inserire il dolce che si vuole ordinare: ";
-            cin >> dolce;
-            dolce[0] = toupper(dolce[0]);
-            cout << "Inserire la quantità di dolci: ";
-            cin >> q;
-            r = Ricerca(dolce, pathTemp);
-            if (r == -1) {
-                cout << "Dolce non trovato!" << endl;
-                _getch();
-            }
-            else {
+            do
+            {
                 system("CLS");
-                Ordinazione(dolce, q, pathTemp);
-                StampaProcedimento(dolce, ricetteOrdini, pathTemp, pathOrdine);
-                cout << "dolce:" << p.dolce;
-            }
-            /*
-            system("CLS");
-            cout << "Inserire un altro dolce? (Y/N) ";
-            cin >> uscita;
-            uscita = toupper(uscita);
-            while (uscita != 'Y' && uscita != 'N') {
+                RicavaMenu(reader, pathTemp);
+                cout << "Inserire il dolce che si vuole ordinare: ";
+                cin >> dolce;
+                dolce[0] = toupper(dolce[0]);
+                cout << "Inserire la quantità di dolci: ";
+                cin >> q;
+                r = Ricerca(dolce, pathTemp);
+                if (r == -1) {
+                    cout << "Dolce non trovato!" << endl;
+                    _getch();
+                }
+                else {
+                    system("CLS");
+                    Ordinazione(dolce, q, pathTemp);
+                    StampaProcedimento(dolce, ricetteOrdini, pathTemp, pathOrdine);
+                }
+            
                 system("CLS");
-                cout << "Inserire un altro dolce? (Y/N)" << endl << "Inserire come input 'Y' o 'N'" << endl;
+                cout << "Inserire un altro dolce? (Y/N) ";
                 cin >> uscita;
                 uscita = toupper(uscita);
-            }
-            */
-
-            //} while (uscita != 'N');
+                while (uscita != 'Y' && uscita != 'N') {
+                    system("CLS");
+                    cout << "Inserire un altro dolce? (Y/N)" << endl << "Inserire come input 'Y' o 'N'" << endl;
+                    cin >> uscita;
+                    uscita = toupper(uscita);
+                }
+            } while (uscita != 'N');
             break;
         case 3:
             system("CLS");
