@@ -44,6 +44,7 @@ static void AggiuntaMenu(string dolceOrdinato, int& dim, fstream& writer, fstrea
 {
     string line, line2, split;
     int N, scelta, controllo = 0, min = 2000, max = 5000;
+    srand(time(NULL));
 
     fstream dispensa;
     if (dim < 100)
@@ -207,40 +208,35 @@ string Spaziatura(string input) {
 */
 static void SottrazioneDispensa(int prodotto, string ingrediente) {
     string line;
-    fstream reader;
+    fstream reader, writer;
     string pathDispensa = "Dispensa.csv";
-
+    int controllo = 0;
+    writer.open("DispensaApp.csv", ios::out | ios::app);
     reader.open(pathDispensa, ios::in);
     while (getline(reader, line))
     {
         int inizio = line.find(";"); // Trova il primo carattere ";" nella riga
-        while (inizio != string::npos)
-        {
-            int fine = line.find(";", inizio + 1); // Trova il prossimo carattere ";" nella riga
-            string sottostringa = line.substr(inizio + 1, fine - inizio - 1); // Estrae la sottostringa tra i due caratteri ";"
-            if (sottostringa.find(ingrediente) != string::npos) {
-                int inizio2 = sottostringa.find(" "); // Trova la quantità
-                int fine2 = sottostringa.find(" ", inizio2 + 1);
-                string sottostringa2 = sottostringa.substr(inizio2 + 1, fine2 - inizio2 - 1);
+
+            if (line.find(ingrediente) != string::npos) {
+                int inizio2 = line.find(" "); // Trova la quantità
+                int fine2 = line.find(" ", inizio2 + 1);
+                string sottostringa2 = line.substr(inizio2 + 1, fine2 - inizio2 - 1);
                 int num = stoi(sottostringa2);
                 int newNum = num - prodotto;
-
-                cout << endl << ingrediente << " " << newNum << endl;
+                writer << ingrediente << " " << newNum << " ;" << endl;
                 inizio2 = fine2;
                 break;
             }
-            inizio = fine;
-
-        }
     }
     _getch();
     reader.close();
+    writer.close();
 }
 //
 static void Ordinazione(string dolce, int quantita, string pathTemp) {
     string line;
-    int prodotto = 0;
-    fstream reader;
+    int prodotto = 0, indice = 0;
+    fstream reader, writer;
     string sottostringa3;
     reader.open(pathTemp, ios::in);
     while (getline(reader, line))
