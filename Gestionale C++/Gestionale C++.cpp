@@ -206,27 +206,41 @@ string Spaziatura(string input) {
     return input;
 }
 */
-static void SottrazioneDispensa(int prodotto, string ingrediente) {
+static void SottrazioneDispensa(int array[], string array2[]) {
     string line;
     fstream reader, writer;
-    string pathDispensa = "Dispensa.csv";
-    int controllo = 0;
+    string pathDispensa = "Dispensa.csv", sottostringa3;
+    int controllo = 0, indice = 0;
     writer.open("DispensaApp.csv", ios::out | ios::app);
     reader.open(pathDispensa, ios::in);
     while (getline(reader, line))
     {
         int inizio = line.find(";"); // Trova il primo carattere ";" nella riga
-
-            if (line.find(ingrediente) != string::npos) {
+        while (inizio != string::npos)
+        {
+            string sottostringa = line.substr(0, inizio); // Estrae la sottostringa tra i due caratteri ";"
+            string ingrediente = line.substr(sottostringa.find(" "));
+            if (ingrediente == array2[indice]) {
                 int inizio2 = line.find(" "); // Trova la quantità
                 int fine2 = line.find(" ", inizio2 + 1);
-                string sottostringa2 = line.substr(inizio2 + 1, fine2 - inizio2 - 1);
-                int num = stoi(sottostringa2);
-                int newNum = num - prodotto;
-                writer << ingrediente << " " << newNum << " ;" << endl;
+                string newQuantita = line.substr(inizio2 + 1, fine2 - inizio2 - 1);
+                int num = stoi(newQuantita);
+                int newNum = num - array[indice];
+                if (fine2 != -1) {
+                    sottostringa3 = sottostringa.substr(fine2 + 1);
+                    writer << ingrediente << " " << newNum << " " << sottostringa3 << ";" << endl;
+                }
+                else
+                    writer << ingrediente << " " << newNum << ";" << endl;
+                
                 inizio2 = fine2;
-                break;
+                indice++;
             }
+            else
+                writer << line << endl;
+
+            inizio = fine;
+        }
     }
     _getch();
     reader.close();
@@ -236,6 +250,8 @@ static void SottrazioneDispensa(int prodotto, string ingrediente) {
 static void Ordinazione(string dolce, int quantita, string pathTemp) {
     string line;
     int prodotto = 0, indice = 0;
+    int array[100];
+    string array2[100];
     fstream reader, writer;
     string sottostringa3;
     reader.open(pathTemp, ios::in);
@@ -260,22 +276,24 @@ static void Ordinazione(string dolce, int quantita, string pathTemp) {
                     if (fine2 != -1) {
                         sottostringa3 = sottostringa.substr(fine2 + 1);
                         int num = stoi(sottostringa2);          //moltiplicare la quantità per il n di dolci ordinati
-                        int prodotto = num * quantita;
+                        prodotto = num * quantita;
                         cout << " " << prodotto << " " << sottostringa3 << endl;
-                        SottrazioneDispensa(prodotto, ingrediente);
                     }
                     else {
                         int num = stoi(sottostringa2);          //moltiplicare la quantità per il n di dolci ordinati
                         prodotto = num * quantita;
                         cout << " " << prodotto << endl;
-                        SottrazioneDispensa(prodotto, ingrediente);
                     }
+                    array[indice] = prodotto;
+                    array2[indice] = ingrediente;
+                    indice++;
                     inizio2 = fine2;
                 }
                 inizio = fine;
             }
         }
     }
+    SottrazioneDispensa(array, array2);
     _getch();
     reader.close();
 }
@@ -309,6 +327,7 @@ static void StampaProcedimento(string dolceOrdinato, fstream& ricetteOrdini, str
     reader.close();
     ricetteOrdini.close();
 }
+
 #pragma endregion
 
 int main()
@@ -316,6 +335,8 @@ int main()
     int scelta, dim = 0, r, q;
     bool c = false;
     char uscita;
+    int array[100];
+    int contatore = 0;
     string dolce, nuovoDolce;
     string path = "ListaDolci.html", pathTemp = "ListaDolciTemp.csv", pathApp = "ListaDolciApp.csv", pathOrdine = "RicetteOrdine.csv", pathDispensa = "Dispensa.csv";
     fstream ListaDolci, ListaDolciTemp, reader, ricetteOrdini, writer;
