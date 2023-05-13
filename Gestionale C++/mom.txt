@@ -1,4 +1,3 @@
-Torta-alle-mele;Mele 6;Zucchero 200 g;Farina 250 g;Burro 100 g;Latte 150 ml;Uova 2;Limoni 1;Lievito-in-polvere 16 g;Cannella-in-polvere 5 g;Sale-fino 5 g;
 Zuppa-inglese;Uova 2;Farina 30 g;Fecola-di-patate 30 g;Zucchero 60 g;Sale-fino 2 g;Latte 400 ml;Panna-fresca-liquida 100 g;Tuorli 4;Amido-di-mais 45 g;Zucchero 140 g;Baccello-di-vaniglia 1;Cioccolato-fondente 50 g;Alchermes 100 g;Cacao-amaro-in-polvere 30 g;
 Brownies;Cioccolato-fondente 260 g;Nocciole-intere-spellate 170 g;Zucchero 160 g;Burro 150 g;Uova 2;Farina 90 g;Cacao-amaro-in-polvere 20 g;Sale-fino 5 g;
 Torta-al-cioccolato;Cioccolato-fondente 150 g;Burro 200 g;Zucchero 150 g;Farina 150 g;Cacao-amaro-in-polvere 30 g;Uova 4;Lievito-in-polvere 8 g;Sale-fino 5 g;Cacao-amaro-in-polvere 30g;

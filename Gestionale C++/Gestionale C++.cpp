@@ -16,6 +16,7 @@ struct prodotto
 };
 
 prodotto p;
+
 #pragma region Funzioni
 
 //
@@ -199,54 +200,59 @@ static void Sostituzione(string appoggio, string vecchio) {
         perror("Error renaming file");
 }
 
-
-/*
-string Spaziatura(string input) {
-    input.replace(input.find("-"), 1, " ");
-    return input;
-}
-*/
 static void SottrazioneDispensa(int array[], string array2[]) {
     string line;
-    fstream reader, writer;
+    fstream reader, writer, writer2;
     string pathDispensa = "Dispensa.csv", sottostringa3;
-    int controllo = 0, indice = 0;
-    writer.open("DispensaApp.csv", ios::out | ios::app);
+    int controllo = 0, indice = 0, newNum = 0, num;
+    writer.open("DispensaApp.csv", ios::out);
     reader.open(pathDispensa, ios::in);
     while (getline(reader, line))
     {
-        int inizio = line.find(";"); // Trova il primo carattere ";" nella riga
-        while (inizio != string::npos)
+        string ingrediente = line.substr(0, line.find(" "));
+        indice = 0;
+        for (int i = 0; i < 13; i++)
         {
-            string sottostringa = line.substr(0, inizio); // Estrae la sottostringa tra i due caratteri ";"
-            string ingrediente = line.substr(sottostringa.find(" "));
             if (ingrediente == array2[indice]) {
-                int inizio2 = line.find(" "); // Trova la quantità
-                int fine2 = line.find(" ", inizio2 + 1);
-                string newQuantita = line.substr(inizio2 + 1, fine2 - inizio2 - 1);
-                int num = stoi(newQuantita);
-                int newNum = num - array[indice];
-                if (fine2 != -1) {
-                    sottostringa3 = sottostringa.substr(fine2 + 1);
-                    writer << ingrediente << " " << newNum << " " << sottostringa3 << ";" << endl;
+                int inizio2 = line.find(" ");
+                int fine2 = line.find(" ", inizio2 + 1);                                
+                string newQuantita = line.substr(inizio2 + 1, fine2 - inizio2 - 1);     
+                num = stoi(newQuantita);                                            
+                newNum = num - array[indice];
+                if (newNum > 0) {
+                    if (fine2 != -1) {
+                        sottostringa3 = line.substr(fine2 + 1);
+                        writer << ingrediente << " " << newNum << " " << sottostringa3 << endl;
+                    }
+                    else
+                        writer << ingrediente << " " << newNum << ";" << endl;
                 }
-                else
-                    writer << ingrediente << " " << newNum << ";" << endl;
-                
-                inizio2 = fine2;
-                indice++;
+                else {
+                    if (fine2 != -1) {
+                        sottostringa3 = line.substr(fine2 + 1);
+                        writer << ingrediente << " " << 0 << " " << sottostringa3 << endl;
+                    }
+                    else
+                        writer << ingrediente << " " << 0 << ";" << endl;
+                    
+                    writer2.open("ListaSpesa.csv", ios::out | ios::app);
+                    writer2 << ingrediente << " " << newNum * -1 << ";";
+                    writer2.close();
+                }
+                controllo = 0;
+                break;
             }
             else
-                writer << line << endl;
-
-            inizio = fine;
+                controllo++;
+            indice++;
         }
+        if(controllo != 0)
+            writer << line << endl;
     }
     _getch();
     reader.close();
     writer.close();
 }
-//
 static void Ordinazione(string dolce, int quantita, string pathTemp) {
     string line;
     int prodotto = 0, indice = 0;
@@ -298,6 +304,9 @@ static void Ordinazione(string dolce, int quantita, string pathTemp) {
     reader.close();
 }
 
+//
+
+
 static void StampaProcedimento(string dolceOrdinato, fstream& ricetteOrdini, string pathTemp, string pathOrdine)
 {
     string line, sep = ";", ingpath = "Ingredienti.csv", ricpath = "RicettarioGenerale.csv";
@@ -337,7 +346,7 @@ int main()
     char uscita;
     int array[100];
     int contatore = 0;
-    string dolce, nuovoDolce;
+    string dolce, nuovoDolce, line;
     string path = "ListaDolci.html", pathTemp = "ListaDolciTemp.csv", pathApp = "ListaDolciApp.csv", pathOrdine = "RicetteOrdine.csv", pathDispensa = "Dispensa.csv";
     fstream ListaDolci, ListaDolciTemp, reader, ricetteOrdini, writer;
     do {
@@ -357,7 +366,6 @@ int main()
             cout << "Inserire il dolce: ";
             cin >> dolce;
             dolce[0] = toupper(dolce[0]);
-            //dolce = Spaziatura(dolce);
             htmlI(ListaDolci, path);
             AggiuntaMenu(dolce, dim, writer, reader, path, pathTemp, pathDispensa);
             htmlF(ListaDolci, path);
@@ -371,14 +379,15 @@ int main()
                 cout << "Inserire il dolce che si vuole ordinare: ";
                 cin >> dolce;
                 dolce[0] = toupper(dolce[0]);
-                cout << "Inserire la quantità di dolci: ";
-                cin >> q;
                 r = Ricerca(dolce, pathTemp);
                 if (r == -1) {
+                    system("CLS");
                     cout << "Dolce non trovato!" << endl;
                     _getch();
                 }
                 else {
+                    cout << "Inserire la quantità di dolci: ";
+                    cin >> q;
                     system("CLS");
                     Ordinazione(dolce, q, pathTemp);
                     StampaProcedimento(dolce, ricetteOrdini, pathTemp, pathOrdine);
@@ -428,6 +437,14 @@ int main()
                 nuovoDolce[0] = toupper(nuovoDolce[0]);
                 ModificaDolce(dolce, nuovoDolce, writer, reader, pathTemp, pathApp);
                 Sostituzione(pathApp, pathTemp);
+            }
+            break;
+        case 5:
+            system("CLS");
+            reader.open("Dispensa.csv", ios::in);
+            cout << "Dispensa: " << endl << endl;
+            while (getline(reader, line)) {
+                cout << line << endl;
             }
             break;
         }
