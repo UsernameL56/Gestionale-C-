@@ -236,7 +236,7 @@ static void SottrazioneDispensa(int array[], string array2[]) {
                         writer << ingrediente << " " << 0 << ";" << endl;
                     
                     writer2.open("ListaSpesa.csv", ios::out | ios::app);
-                    writer2 << ingrediente << " " << newNum * -1 << ";";
+                    writer2 << ingrediente << " " << newNum * -1 << ";" << endl;
                     writer2.close();
                 }
                 controllo = 0;
@@ -304,6 +304,63 @@ static void Ordinazione(string dolce, int quantita, string pathTemp) {
     reader.close();
 }
 
+static void Spesa() {
+    fstream reader, writer, reader2, writer2;
+    srand(time(NULL));
+    int min = 2000, max = 5000, indice = 0, indice2 = 0, contatore = 0;
+    string pathDispensa = "Dispensa.csv", line, ingredienteSpesa, ingredienteDispensa, unità, array[100], array2[100];
+    reader.open("ListaSpesa.csv", ios::in);
+    while (getline(reader, line)) {
+        ingredienteSpesa = line.substr(0, line.find(" "));
+        array2[indice2] = ingredienteSpesa;
+        indice2++;
+        reader2.open("DispensaApp.csv", ios::in);
+        while (getline(reader2, line)) {
+            ingredienteDispensa = line.substr(0, line.find(" "));
+            int inizio = line.find(" ");
+            int fine = line.find(" ", inizio + 1);
+            int fine2 = line.find(";");
+            if (fine != -1) {
+                unità = line.substr(fine, fine2);
+            }
+            else
+                unità = "";
+
+            if (ingredienteSpesa == ingredienteDispensa) {
+
+                if (unità == " g;")
+                    array[indice] = ingredienteDispensa + " " + to_string((rand() % (max - min + 1)) + min) + " g;";
+                else if (unità == " ml;")
+                    array[indice] = ingredienteDispensa + " " + to_string((rand() % (max - min + 1)) + min) + " ml;";
+                else
+                    array[indice] = ingredienteDispensa + " " + to_string((rand() % (100 - 20 + 1)) + 20) + ";";
+                indice++;
+            }
+        }
+        reader2.close();
+    }
+    reader.close();
+
+    /*
+     reader.open("Dispensa.csv", ios::in);
+    writer.open("DispensaAppApp.csv", ios::out | ios::app);
+        while (getline(reader, line)) {
+            ingredienteDispensa = line.substr(0, line.find(" "));
+            if (array2[contatore] == ingredienteDispensa){
+                writer << array[contatore] << endl;
+            }
+            else
+                writer << line << endl;
+        }
+ 
+    writer.close();
+    reader.close();
+    */
+   
+    
+
+    
+}
 //
 
 
@@ -446,6 +503,9 @@ int main()
             while (getline(reader, line)) {
                 cout << line << endl;
             }
+            break;
+        case 6:
+            Spesa();
             break;
         }
         cout << "Premere un tasto per continuare...";
