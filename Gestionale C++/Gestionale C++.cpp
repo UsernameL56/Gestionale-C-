@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <string>
 #include <conio.h>
+#include <array>
 
 using namespace std;
 struct prodotto
@@ -92,11 +93,11 @@ static void AggiuntaMenu(string dolceOrdinato, int& dim, fstream& writer, fstrea
                     controllo += 1;
             }
             if (controllo == 0 && scelta == 0)
-                dispensa << p.ingrediente[i - 1] << " " << (rand() % (100 - 10 + 1)) + 10;
+                dispensa << endl << p.ingrediente[i - 1] << " " << (rand() % (100 - 10 + 1)) + 10;
             else if (controllo == 0 && scelta == 1)
-                dispensa << p.ingrediente[i - 1] << " " << (rand() % (max - min + 1)) + min << " g;";
+                dispensa << endl << p.ingrediente[i - 1] << " " << (rand() % (max - min + 1)) + min << " g;";
             else if (controllo == 0 && scelta == 2)
-                dispensa << p.ingrediente[i - 1] << " " << (rand() % (max - min + 1)) + min << " ml;";
+                dispensa << endl << p.ingrediente[i - 1] << " " << (rand() % (max - min + 1)) + min << " ml;";
             reader.close();
             dispensa.close();
         }
@@ -200,18 +201,29 @@ static void Sostituzione(string appoggio, string vecchio) {
         perror("Error renaming file");
 }
 
+static int Contatore() {
+    fstream reader;
+    string line;
+    int contatore = 0;
+    reader.open("Dispensa.csv", ios::in);
+    while (getline(reader, line))
+    {
+        contatore++;
+    }
+    return contatore;
+}
 static void SottrazioneDispensa(int array[], string array2[]) {
     string line;
     fstream reader, writer, writer2;
     string pathDispensa = "Dispensa.csv", sottostringa3;
-    int controllo = 0, indice = 0, newNum = 0, num;
+    int controllo = 0, indice = 0, newNum = 0, num, nRighe = Contatore();
     writer.open("DispensaApp.csv", ios::out);
     reader.open(pathDispensa, ios::in);
     while (getline(reader, line))
     {
         string ingrediente = line.substr(0, line.find(" "));
         indice = 0;
-        for (int i = 0; i < 13; i++)
+        for (int i = 0; i < nRighe; i++)
         {
             if (ingrediente == array2[indice]) {
                 int inizio2 = line.find(" ");
@@ -252,6 +264,7 @@ static void SottrazioneDispensa(int array[], string array2[]) {
     _getch();
     reader.close();
     writer.close();
+    Sostituzione("DispensaApp.csv", "Dispensa.csv");
 }
 static void Ordinazione(string dolce, int quantita, string pathTemp) {
     string line;
@@ -307,7 +320,7 @@ static void Ordinazione(string dolce, int quantita, string pathTemp) {
 static void Spesa() {
     fstream reader, writer, reader2, writer2;
     srand(time(NULL));
-    int min = 2000, max = 5000, indice = 0, indice2 = 0, contatore = 0;
+    int min = 2000, max = 5000, indice = 0, indice2 = 0, contatore = 0, nRighe = Contatore();
     string pathDispensa = "Dispensa.csv", line, ingredienteSpesa, ingredienteDispensa, unità, array[100], array2[100];
     reader.open("ListaSpesa.csv", ios::in);
     while (getline(reader, line)) {
@@ -341,27 +354,34 @@ static void Spesa() {
     }
     reader.close();
 
-    /*
-     reader.open("Dispensa.csv", ios::in);
-    writer.open("DispensaAppApp.csv", ios::out | ios::app);
-        while (getline(reader, line)) {
-            ingredienteDispensa = line.substr(0, line.find(" "));
-            if (array2[contatore] == ingredienteDispensa){
-                writer << array[contatore] << endl;
-            }
-            else
-                writer << line << endl;
-        }
- 
-    writer.close();
-    reader.close();
-    */
-   
-    
+    writer.open("DispensaAppApp.csv", ios::out);
+    reader.open("Dispensa.csv", ios::in);
 
     
+        while (getline(reader, line))
+        {
+            string ingrediente = line.substr(0, line.find(" "));
+            indice = 0;
+            for (int i = 0; i < nRighe; i++)
+            {
+            
+            if (ingrediente == array2[indice]) {
+                writer << array[i] << endl;
+                contatore = 0;
+                break;
+            }
+            else
+                contatore++;
+            indice++;
+        }
+        if (contatore != 0)
+            writer << line << endl;
+    }
+
+    _getch();
+    reader.close();
+    writer.close();
 }
-//
 
 
 static void StampaProcedimento(string dolceOrdinato, fstream& ricetteOrdini, string pathTemp, string pathOrdine)
@@ -503,6 +523,7 @@ int main()
             while (getline(reader, line)) {
                 cout << line << endl;
             }
+            reader.close();
             break;
         case 6:
             Spesa();
