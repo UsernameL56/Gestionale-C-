@@ -45,7 +45,7 @@ static int Ricerca(string nome, string filePath)
 static void AggiuntaMenu(string dolceOrdinato, int& dim, fstream& writer, fstream& reader, string path, string pathTemp, string pathDispensa)
 {
     string line, line2, split;
-    int N, scelta, controllo = 0, min = 2000, max = 5000;
+    int N, scelta, controllo = 0, min = 2000, max = 5000, uscita = 0;
     srand(time(NULL));
 
     fstream dispensa;
@@ -63,23 +63,30 @@ static void AggiuntaMenu(string dolceOrdinato, int& dim, fstream& writer, fstrea
             p.ingrediente[i - 1][0] = toupper(p.ingrediente[i - 1][0]);
             cout << "Inserire la quantita di quell'ingrediente: ";
             cin >> p.quantità[i - 1];
-            cout << "Seleziona l'unita di misura del " << i << " ingrediente (0 - no unita misura / 1 - g / 2 - ml): ";
-            cin >> scelta;
-            switch (scelta)
-            {
-            default:
-                cout << "Input non valido!";
-                break;
-            case 0:
-                writer << p.ingrediente[i - 1] << " " << p.quantità[i - 1] << ";";
-                break;
-            case 1:
-                writer << p.ingrediente[i - 1] << " " << p.quantità[i - 1] << " g;";
-                break;
-            case 2:
-                writer << p.ingrediente[i - 1] << " " << p.quantità[i - 1] << " ml;";
-                break;
-            }
+            do {
+                cout << "Seleziona l'unita di misura del " << i << " ingrediente (0 - no unita misura / 1 - g / 2 - ml): ";
+                cin >> scelta;
+                switch (scelta)
+                {
+                default:
+                    cout << "Input non valido!" << endl;
+                    uscita = 0;
+                    break;
+                case 0:
+                    writer << p.ingrediente[i - 1] << " " << p.quantità[i - 1] << ";";
+                    uscita = 1;
+                    break;
+                case 1:
+                    writer << p.ingrediente[i - 1] << " " << p.quantità[i - 1] << " g;";
+                    uscita = 1;
+                    break;
+                case 2:
+                    writer << p.ingrediente[i - 1] << " " << p.quantità[i - 1] << " ml;";
+                    uscita = 1;
+                    break;
+                }
+            } while (uscita == 0);
+            
 
             //SALVATAGGIO DEGLI INGREDIENTI SU DISPENSA
             dispensa.open(pathDispensa, ios::out | ios::app);
@@ -195,10 +202,8 @@ static void ModificaDolce(string dolceSelezionato, string nuovoDolce, fstream& w
 
 static void Sostituzione(string appoggio, string vecchio) {
     remove(vecchio.c_str());
-    if (rename(appoggio.c_str(), vecchio.c_str()) == 0)
-        cout << "Elemento cancellato/modificato con successo!" << endl;
-    else
-        perror("Error renaming file");
+    if (rename(appoggio.c_str(), vecchio.c_str()) != 0)
+        perror("Errore!");
 }
 
 static int Contatore() {
@@ -261,7 +266,6 @@ static void SottrazioneDispensa(int array[], string array2[]) {
         if(controllo != 0)
             writer << line << endl;
     }
-    _getch();
     reader.close();
     writer.close();
     Sostituzione("DispensaApp.csv", "Dispensa.csv");
@@ -288,7 +292,6 @@ static void Ordinazione(string dolce, int quantita, string pathTemp) {
                 }
                 else {
                     string ingrediente = line.substr(inizio + 1, sottostringa.find(" "));
-                    cout << ingrediente;
                     int inizio2 = sottostringa.find(" "); // Trova la quantità
                     int fine2 = sottostringa.find(" ", inizio2 + 1);
                     string sottostringa2 = sottostringa.substr(inizio2 + 1, fine2 - inizio2 - 1);
@@ -296,12 +299,10 @@ static void Ordinazione(string dolce, int quantita, string pathTemp) {
                         sottostringa3 = sottostringa.substr(fine2 + 1);
                         int num = stoi(sottostringa2);          //moltiplicare la quantità per il n di dolci ordinati
                         prodotto = num * quantita;
-                        cout << " " << prodotto << " " << sottostringa3 << endl;
                     }
                     else {
                         int num = stoi(sottostringa2);          //moltiplicare la quantità per il n di dolci ordinati
                         prodotto = num * quantita;
-                        cout << " " << prodotto << endl;
                     }
                     array[indice] = prodotto;
                     array2[indice] = ingrediente;
@@ -313,7 +314,6 @@ static void Ordinazione(string dolce, int quantita, string pathTemp) {
         }
     }
     SottrazioneDispensa(array, array2);
-    _getch();
     reader.close();
 }
 
@@ -327,7 +327,7 @@ static void Spesa() {
         ingredienteSpesa = line.substr(0, line.find(" "));
         array2[indice2] = ingredienteSpesa;
         indice2++;
-        reader2.open("DispensaApp.csv", ios::in);
+        reader2.open("Dispensa.csv", ios::in);
         while (getline(reader2, line)) {
             ingredienteDispensa = line.substr(0, line.find(" "));
             int inizio = line.find(" ");
@@ -356,8 +356,6 @@ static void Spesa() {
 
     writer.open("DispensaAppApp.csv", ios::out);
     reader.open("Dispensa.csv", ios::in);
-
-    
         while (getline(reader, line))
         {
             string ingrediente = line.substr(0, line.find(" "));
@@ -377,10 +375,9 @@ static void Spesa() {
         if (contatore != 0)
             writer << line << endl;
     }
-
-    _getch();
     reader.close();
     writer.close();
+    Sostituzione("DispensaAppApp.csv", "Dispensa.csv");
 }
 
 
@@ -428,7 +425,7 @@ int main()
     fstream ListaDolci, ListaDolciTemp, reader, ricetteOrdini, writer;
     do {
         system("CLS");
-        cout << "1 - Aggiunta dolce\n2 - Ordinazione\n3 - Elimina dolce\n4 - Modifica dolce\n5 - Visualizza Dispensa\n0 - Uscita\n" << endl;
+        cout << "1 - Aggiunta dolce\n2 - Ordinazione\n3 - Elimina dolce\n4 - Modifica dolce\n5 - Visualizza Dispensa\n6 - Fai la spesa\n0 - Uscita\n" << endl;
         cout << "Inserire la scelta: ";
         cin >> scelta;
         switch (scelta) {
@@ -485,36 +482,42 @@ int main()
         case 3:
             system("CLS");
             RicavaMenu(reader, pathTemp);
-            cout << "Inserire il dolce che si desidera eliminare: ";
-            cin >> dolce;
-            dolce[0] = toupper(dolce[0]);
-            r = Ricerca(dolce, pathTemp);
-            if (r == -1) {
-                cout << "Dolce non trovato!" << endl;
-            }
-            else {
+            do {
+                cout << "Inserire il dolce che si desidera eliminare: ";
+                cin >> dolce;
+                dolce[0] = toupper(dolce[0]);
+                r = Ricerca(dolce, pathTemp);
+                if (r == -1) {
+                    cout << "Dolce non trovato!" << endl;
+                }
+                else {
 
-                EliminaDolce(dolce, writer, reader, pathTemp, pathApp);
-                Sostituzione(pathApp, pathTemp);
-            }
+                    EliminaDolce(dolce, writer, reader, pathTemp, pathApp);
+                    Sostituzione(pathApp, pathTemp);
+                }
+            } while (r == -1);
+            
             break;
         case 4:
             system("CLS");
             RicavaMenu(reader, pathTemp);
-            cout << "Inserire il dolce che si desidera modificare: ";
-            cin >> dolce;
-            dolce[0] = toupper(dolce[0]);
-            r = Ricerca(dolce, pathTemp);
-            if (r == -1) {
-                cout << "Dolce non trovato!" << endl;
-            }
-            else {
-                cout << "Inserire il nuovo dolce: ";
-                cin >> nuovoDolce;
-                nuovoDolce[0] = toupper(nuovoDolce[0]);
-                ModificaDolce(dolce, nuovoDolce, writer, reader, pathTemp, pathApp);
-                Sostituzione(pathApp, pathTemp);
-            }
+            do {
+                cout << "Inserire il dolce che si desidera modificare: ";
+                cin >> dolce;
+                dolce[0] = toupper(dolce[0]);
+                r = Ricerca(dolce, pathTemp);
+                if (r == -1) {
+                    cout << "Dolce non trovato!" << endl;
+                }
+                else {
+                    cout << "Inserire il nuovo dolce: ";
+                    cin >> nuovoDolce;
+                    nuovoDolce[0] = toupper(nuovoDolce[0]);
+                    ModificaDolce(dolce, nuovoDolce, writer, reader, pathTemp, pathApp);
+                    Sostituzione(pathApp, pathTemp);
+                }
+            } while (r == -1);
+            
             break;
         case 5:
             system("CLS");
@@ -527,6 +530,7 @@ int main()
             break;
         case 6:
             Spesa();
+            remove("ListaSpesa.csv");
             break;
         }
         cout << "Premere un tasto per continuare...";
