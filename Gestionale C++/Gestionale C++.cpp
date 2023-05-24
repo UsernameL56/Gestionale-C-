@@ -5,6 +5,8 @@
 #include <string>
 #include <conio.h>
 #include <array>
+#include <libxml/parser.h>
+#include <libxml/tree.h>
 
 using namespace std;
 struct prodotto
@@ -20,7 +22,6 @@ prodotto p;
 
 #pragma region Funzioni
 
-//
 static int Ricerca(string nome, string filePath)
 {
     int posizione = -1;
@@ -142,7 +143,40 @@ static void AggiuntaMenu(string dolceOrdinato, int& dim, fstream& writer, fstrea
 static void htmlI(fstream& ListaDolci, string path) {
     remove(path.c_str());
     ListaDolci.open(path, ios::out | ios::app);
-    ListaDolci << "<html>" << endl << "<head>" << endl << "<title> Gestionale Pasticceria </title>" << endl << "</head>" << endl << "<body>" << endl << "<h1> Menu </h1>" << endl << "<ul>" << endl;
+    ListaDolci << "<!DOCTYPE html> <html> <head> <title>Menu</title> <link rel=\"shortcut icon" "> href = \"immagini/favicon.ico" "/> <meta name=\"viewport" "content=\"width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" 
+    integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" 
+    crossorigin="anonymous"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="stylesheet" href="menuStyle.css" type="text/css">
+  </head>
+  <body>
+    <nav class="sticky">
+      <input type="checkbox" id="check">
+      <label for="check" class="check-button">
+        <i class="fas fa-bars"></i>
+      </label>
+      <div class="div-logo">
+        <a href="homepage.html"><img src="immagini/logo.png" alt="logo"></a>
+      </div>
+      <ul>
+        <li><a href="storia.html" target="_blank" class="a-elementi"> Storia</a></li>
+        <li><a href="territorio.html" target="_blank" class="a-elementi">Territorio</a></li>
+        <li><a href="monumenti.html" target="_blank" class="a-elementi">Monumenti</a></li>
+        <li><a href="cultura.html" target="_blank" class="a-elementi">Cultura</a></li>
+        <li><a href="trasporti.html" target="_blank" class="a-elementi">Trasporti</a></li>
+        <li><a href="sport.html" target="_blank" class="a-elementi">Sport</a></li>
+        <li><a href="mappa.html" target="_blank" class="a-elementi">Mappa</a></li>
+      </ul>
+    </nav> 
+
+      <div class="div-corpo">
+        <h1 style="color:#fff; margin-left:35px;">Menù</h1>
+          <div class="div-colonna-palazzo1">
+          </div>
+          <div class="div-colonna-palazzo2">
+            <ul>" << endl;
     ListaDolci.close();
 }
 static void htmlF(fstream& ListaDolci, string path) {
