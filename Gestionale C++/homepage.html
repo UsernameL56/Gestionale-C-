@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Homepage</title>
+  <link rel="icon" type="image/x-icon" href="immagini/favicon.ico">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" 
+  integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" 
+  crossorigin="anonymous"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="sticky">
+    <input type="checkbox" id="check">
+    <label for="check" class="check-button">
+      <i class="fas fa-bars"></i>
+    </label>
+    <div class="div-logo">
+      
+      <a href="homepage.html"><img src="immagini/logo.png" alt="logo"></a>
+    </div>
+    <ul>
+      <li><a href="menù.html" target="_blank" class="a-elementi"> Menù</a></li>
+      <li><a href="ordini.html" target="_blank" class="a-elementi">Ordinazioni</a></li>
+      <li><a href="dispensa.html"target="_blank" class="a-elementi">Dispensa</a></li>
+      <li><a href="spesa.html"target="_blank" class="a-elementi">Spesa</a></li>
+      <li><a href="homepage.html#orari" class="a-elementi">Orari</a></li>
+      <li><a href="homepage.html#vieniatrovarci" class="a-elementi">Vieni a trovarci</a></li>
+      <li><a href="homepage.html#contatti" class="a-elementi">Contatti</a></li>
+    </ul>
+  </nav>
+  <section class="div-banner" id="banner">
+    <div class="contenitore-banner">
+      <h1 class="titolo-banner">Pasticceria C&R</h1>
+      <p class="paragrafo-banner">Benvenuti nella pasticceria artigianale di Ciccio Pasticcio e Renata Imbranata, dove la passione per i dolci incontra l'arte della pasticceria. Scegliete tra la vasta selezione di prodotti e godetevi il loro sapore autentico e la qualità artigianale.</p>
+    </div>
+  </section>
+  <section class="dlc" id="esposizione prodotti">
+    <h2>I NOSTRI DOLCI</h2>
+    <p>Alcuni dei nostri prodotti</p>
+    <div class="riga">
+      <div class="dlc-col">
+        <img src="immagini/tiramisu.jpg" alt="tiramisu">
+        <div class="layer">
+          <h3> Tiramisù </h3>
+        </div>
+      </div>
+      <div class="dlc-col">
+        <img src="immagini/crostata_fragole.jpg" alt="crostata fragole">
+        <div class="layer">
+          <h3> Crostata di Fragole </h3>
+        </div>
+      </div>
+      <div class="dlc-col">
+        <img src="immagini/panna_cotta.jpg" alt="panna cotta">
+        <div class="layer">
+          <h3> Panna cotta </h3>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class = "orari" id="orari">
+    <h1 style="font-size: 43px;">Orari</h1>
+    <table>
+      <tr>
+        <th>Giorno</th>
+        <th>Ora di apertura</th>
+        <th>Ora di chiusura</th>
+      </tr>
+      <tr>
+        <td>Lunedì</td>
+        <td>8:00</td>
+        <td>18:00</td>
+      </tr>
+      <tr>
+        <td>Martedì</td>
+        <td>8:00</td>
+        <td>18:00</td>
+      </tr>
+      <tr>
+        <td>Mercoledì</td>
+        <td>8:00</td>
+        <td>18:00</td>
+      </tr>
+      <tr>
+        <td>Giovedì</td>
+        <td>8:00</td>
+        <td>18:00</td>
+      </tr>
+      <tr>
+        <td>Venerdì</td>
+        <td>8:00</td>
+        <td>20:00</td>
+      </tr>
+      <tr>
+        <td>Sabato</td>
+        <td>9:00</td>
+        <td>17:00</td>
+      </tr>
+      <tr>
+        <td>Domenica</td>
+        <td>10:00</td>
+        <td>16:00</td>
+      </tr>
+    </table>
+  </section>
+  <section class="trovaci">
+    <div class="left-section">
+      <a href="https://maps.app.goo.gl/5eZ8JpEXTctTDHnZA" target="_blank" style="all:unset;"><h1 style="text-align: center; padding-top: 25%; font-size:75px;">Vieni a trovarci</h1></a>
+    </div>
+    <div class="right-section">
+      <img src="immagini/trovaci.jpg" alt="Immagine" style="width: 650px; margin-left: 40px;">
+    </div>
+  </section>
+  <footer class = "footer" id="contatti">
+    <div class="container">
+      <div class = "div-footer-left">
+        <div class = "left1">
+          <p><img src="immagini/pin.png" width = 20px;> VQJG+4F4, Addis Abeba, Etiopia </p>
+        </div>
+        <div class = "left1">
+          <p><img src="immagini/phone.png" width = 20px;> +96 554 354 3012 </p>
+        </div>
+        <div class = "left1">
+          <p><img src="immagini/mail.png" width = 20px;> <a href="mailto:hege@example.com">C&Rgmail@gmail.com</a></p> </p>
+        </div>
+      </div>
+      <div class = "div-footer-right">
+        <div class ="right1">
+          <input type="text" id="fname" name="fname" class = "email" placeholder="Inserire l'email"><br><br>
+        </div>
+        <div class="right2">
+          <button class="bottone">Invia</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
