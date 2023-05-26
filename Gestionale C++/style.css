@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
-/* Homepage */
 body{
     margin:0;
     padding:0;
@@ -141,7 +140,6 @@ nav ul li a:hover{
 	display:flex;
 	justify-content: space-between;
 }
-/* per schermi più piccoli*/
 @media (max-width: 700px){
     .riga{
 		flex-direction: column;
@@ -247,9 +245,6 @@ table {
     max-width: 100%;
     height: auto;
   }
-
-
-
 
 .container{
     width: 100%;

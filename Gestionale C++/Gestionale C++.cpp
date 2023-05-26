@@ -164,20 +164,19 @@ static void AggiuntaMenu(string dolceOrdinato, int& dim, fstream& writer, fstrea
         reader.close();
         writer.close();
         dim++;
-
     }
     else {
         cout << "Errore! Limite massimo raggiunto" << endl;
     }
 }
 //Funzione scrittura Menu html
-static void htmlI(fstream& ListaDolci, string path) {
+static void htmlIMenu(fstream& ListaDolci, string path) {
     remove(path.c_str());
     ListaDolci.open(path, ios::out | ios::app);
-    ListaDolci << "<!DOCTYPE html><html><head><title>Menu</title><link rel=\"shortcut icon\" href=\"immagini/favicon.ico\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel=\"stylesheet\" href=\"https://use.fontawesome.com/releases/v5.15.4/css/all.css\" integrity=\"sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm\" crossorigin=\"anonymous\"/><link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css\"><link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\"><link rel=\"stylesheet\" href=\"menuStyle.css\" type=\"text/css\"></head><body><nav class=\"sticky\"><input type=\"checkbox\" id=\"check\"><label for=\"check\" class=\"check-button\"><i class=\"fas fa-bars\"></i></label><div class=\"div-logo\"><a href=\"homepage.html\"><img src=\"immagini/logo.png\" alt=\"logo\"></a></div><ul><li><a href=\"menù.html\" target=\"_blank\" class=\"a-elementi\"> Menù</a></li><li><a href=\"ordini.html\" target=\"_blank\" class=\"a-elementi\">Ordinazioni</a></li><li><a href=\"dispensa.html\"target=\"_blank\" class=\"a-elementi\">Dispensa</a></li><li><a href=\"spesa.html\"target=\"_blank\" class=\"a-elementi\">Spesa</a></li><li><a href=\"homepage.html#orari\" class=\"a-elementi\">Orari</a></li><li><a href=\"homepage.html#vieniatrovarci\" class=\"a-elementi\">Vieni a trovarci</a></li><li><a href=\"homepage.html#contatti\" class=\"a-elementi\">Contatti</a></li></ul></nav><div class=\"div-corpo-menu\"><div class=\"classedeldiv\"><h4>Menù</h4><ul class='paper'>" << endl;
+    ListaDolci << "<!DOCTYPE html><html><head><title>Menu</title><link rel=\"shortcut icon\" href=\"immagini/favicon.ico\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel=\"stylesheet\" href=\"https://use.fontawesome.com/releases/v5.15.4/css/all.css\" integrity=\"sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm\" crossorigin=\"anonymous\"/><link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css\"><link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\"><link rel=\"stylesheet\" href=\"menuStyle.css\" type=\"text/css\"></head><body><nav class=\"sticky\"><input type=\"checkbox\" id=\"check\"><label for=\"check\" class=\"check-button\"><i class=\"fas fa-bars\"></i></label><div class=\"div-logo\"><a href=\"homepage.html\"><img src=\"immagini/logo.png\" alt=\"logo\"></a></div><ul><li><a href=\"menu.html\" target=\"_blank\" class=\"a-elementi\"> Menu</a></li><li><a href=\"ordini.html\" target=\"_blank\" class=\"a-elementi\">Ordinazioni</a></li><li><a href=\"dispensa.html\"target=\"_blank\" class=\"a-elementi\">Dispensa</a></li><li><a href=\"spesa.html\"target=\"_blank\" class=\"a-elementi\">Spesa</a></li><li><a href=\"homepage.html#orari\" class=\"a-elementi\">Orari</a></li><li><a href=\"homepage.html#vieniatrovarci\" class=\"a-elementi\">Vieni a trovarci</a></li><li><a href=\"homepage.html#contatti\" class=\"a-elementi\">Contatti</a></li></ul></nav><div class=\"div-corpo-menu\"><div class=\"classedeldiv\"><h4>Menu</h4><ul class='paper'>" << endl;
     ListaDolci.close();
 }
-static void htmlF(fstream& ListaDolci, string path) {
+static void htmlFMenu(fstream& ListaDolci, string path) {
     ListaDolci.open(path, ios::out | ios::app);
     ListaDolci << "</ul></div></div><footer class = \"footer\" id=\"contatti\"><div class=\"container\"><div class = \"div-footer-left\"><div class = \"left1\"><p><img src=\"immagini/pin.png\" width = 20px;> VQJG+4F4, Addis Abeba, Etiopia </p></div><div class = \"left1\"><p><img src=\"immagini/phone.png\" width = 20px;> +96 554 354 3012 </p></div><div class = \"left1\"><p><img src=\"immagini/mail.png\" width = 20px;> <a href=\"mailto:hege@example.com\">C&Rgmail@gmail.com</a></p> </p></div></div><div class = \"div-footer-right\"><div class =\"right1\"><input type=\"text\" id=\"fname\" name=\"fname\" class = \"email\" placeholder=\"Inserire l'email\"><br><br></div><div class=\"right2\"><button class=\"bottone\">Invia</button></div></div></div></footer></body></html>" << endl;
     ListaDolci.close();
@@ -188,13 +187,43 @@ static void htmlIDispensa(fstream& ListaDolci) {
     string dispensa = "dispensa.html";
     remove(dispensa.c_str());
     ListaDolci.open(dispensa, ios::out | ios::app);
-    ListaDolci << "<!DOCTYPE html><html><head><title>Dispensa</title><link rel=\"shortcut icon\" href=\"immagini/favicon.ico\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel=\"stylesheet\" href=\"https://use.fontawesome.com/releases/v5.15.4/css/all.css\" integrity=\"sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm\" crossorigin=\"anonymous\"/><link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css\"><link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\"><link rel=\"stylesheet\" href=\"menuStyle.css\" type=\"text/css\"></head><body><nav class=\"sticky\"><input type=\"checkbox\" id=\"check\"><label for=\"check\" class=\"check-button\"><i class=\"fas fa-bars\"></i></label><div class=\"div-logo\"><a href=\"homepage.html\"><img src=\"immagini/logo.png\" alt=\"logo\"></a></div><ul><li><a href=\"menù.html\" target=\"_blank\" class=\"a-elementi\"> Menù</a></li><li><a href=\"ordini.html\" target=\"_blank\" class=\"a-elementi\">Ordinazioni</a></li><li><a href=\"dispensa.html\"target=\"_blank\" class=\"a-elementi\">Dispensa</a></li><li><a href=\"spesa.html\"target=\"_blank\" class=\"a-elementi\">Spesa</a></li><li><a href=\"homepage.html#contatti\" class=\"a-elementi\">Contatti</a></li><li><a href=\"monumenti.html#vieniatrovarci\" class=\"a-elementi\">Vieni a trovarci</a></li><li><a href=\"monumenti.html#orari\" class=\"a-elementi\">Orari</a></li></ul></nav><section><div class=\"div-corpo-dispensa\"><div class=\"table-title\"><h4 style=\"margin-top: 25px;\">Dispensa</h4></div><table class=\"table-fill\"><thead><tr><th class=\"text-left\">Ingrediente</th><th class=\"text-left\">Quantità</th></tr></thead><tbody class=\"table-hover\">" << endl;
+    ListaDolci << "<!DOCTYPE html> <html><head><title>Dispensa</title><link rel=\"shortcut icon\" href=\"immagini/favicon.ico\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel=\"stylesheet\" href=\"https://use.fontawesome.com/releases/v5.15.4/css/all.css\" integrity=\"sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm\" crossorigin=\"anonymous\"/><link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css\"><link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\"><link rel=\"stylesheet\" href=\"menuStyle.css\" type=\"text/css\"></head><body><nav class=\"sticky\"><input type=\"checkbox\" id=\"check\"><label for=\"check\" class=\"check-button\"><i class=\"fas fa-bars\"></i></label><div class=\"div-logo\"><a href=\"homepage.html\"><img src=\"immagini/logo.png\" alt=\"logo\"></a></div><ul><li><a href=\"menu.html\" target=\"_blank\" class=\"a-elementi\"> Menu</a></li><li><a href=\"ordini.html\" target=\"_blank\" class=\"a-elementi\">Ordinazioni</a></li><li><a href=\"dispensa.html\"target=\"_blank\" class=\"a-elementi\">Dispensa</a></li><li><a href=\"spesa.html\"target=\"_blank\" class=\"a-elementi\">Spesa</a></li><li><a href=\"homepage.html#orari\" class=\"a-elementi\">Orari</a></li><li><a href=\"homepage.html#vieniatrovarci\" class=\"a-elementi\">Vieni a trovarci</a></li><li><a href=\"homepage.html#contatti\" class=\"a-elementi\">Contatti</a></li></ul></nav><section><div class=\"div-corpo-dispensa\"><div class=\"table-title\"><h4 style=\"margin-top: 25px;\">Dispensa</h4></div><table class=\"table-fill\"><thead><tr><th class=\"text-left\">Ingrediente</th><th class=\"text-left\">Quantità</th></tr></thead><tbody class=\"table-hover\">" << endl;
     ListaDolci.close();
 }
 static void htmlFDispensa(fstream& ListaDolci) {
     string dispensa = "dispensa.html";
     ListaDolci.open(dispensa, ios::out | ios::app);
     ListaDolci << "</tbody></table></div></section><footer class = \"footer\" id=\"contatti\"><div class=\"container\"><div class = \"div-footer-left\"><div class = \"left1\"><p><img src=\"immagini/pin.png\" width = 20px;> VQJG+4F4, Addis Abeba, Etiopia </p></div><div class = \"left1\"><p><img src=\"immagini/phone.png\" width = 20px;> +96 554 354 3012 </p></div><div class = \"left1\"><p><img src=\"immagini/mail.png\" width = 20px;> <a href=\"mailto:hege@example.com\">C&Rgmail@gmail.com</a></p> </p></div></div><div class = \"div-footer-right\"><div class =\"right1\"><input type=\"text\" id=\"fname\" name=\"fname\" class = \"email\" placeholder=\"Inserire l'email\"><br><br></div><div class=\"right2\"><button class=\"bottone\">Invia</button></div></div></div></footer></body></html>" << endl;
+    ListaDolci.close();
+}
+
+//Funzione scrittura ListaSpesa html
+static void htmlISpesa(fstream& ListaDolci) {
+    string spesa = "spesa.html";
+    remove(spesa.c_str());
+    ListaDolci.open(spesa, ios::out | ios::app);
+    ListaDolci << "<!DOCTYPE html><html><head><title>ListaSpesa</title><link rel=\"shortcut icon\" href=\"immagini/favicon.ico\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel=\"stylesheet\" href=\"https://use.fontawesome.com/releases/v5.15.4/css/all.css\" integrity=\"sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm\" crossorigin=\"anonymous\"/><link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css\"><link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\"><link rel=\"stylesheet\" href=\"menuStyle.css\" type=\"text/css\"></head><body><nav class=\"sticky\"><input type=\"checkbox\" id=\"check\"><label for=\"check\" class=\"check-button\"><i class=\"fas fa-bars\"></i></label><div class=\"div-logo\"><a href=\"homepage.html\"><img src=\"immagini/logo.png\" alt=\"logo\"></a></div><ul>  <li><a href=\"menu.html\" target=\"_blank\" class=\"a-elementi\"> Menu</a></li>  <li><a href=\"ordini.html\" target=\"_blank\" class=\"a-elementi\">Ordinazioni</a></li>  <li><a href=\"dispensa.html\"target=\"_blank\" class=\"a-elementi\">Dispensa</a></li>  <li><a href=\"spesa.html\"target=\"_blank\" class=\"a-elementi\">Spesa</a></li>  <li><a href=\"homepage.html#orari\" class=\"a-elementi\">Orari</a></li>  <li><a href=\"homepage.html#vieniatrovarci\" class=\"a-elementi\">Vieni a trovarci</a></li>  <li><a href=\"homepage.html#contatti\" class=\"a-elementi\">Contatti</a></li></ul></nav><div class=\"div-corpo-menu\"><div class=\"classedeldiv\"><h4>Lista della Spesa</h4><ul class='paper'>" << endl;
+    ListaDolci.close();
+}
+static void htmlFSpesa(fstream& ListaDolci) {
+    string spesa = "spesa.html";
+    ListaDolci.open(spesa, ios::out | ios::app);
+    ListaDolci << "</ul></div></div><footer class = \"footer\" id=\"contatti\"><div class=\"container\"><div class = \"div-footer-left\"><div class = \"left1\"><p><img src=\"immagini/pin.png\" width = 20px;> VQJG+4F4, Addis Abeba, Etiopia </p></div><div class = \"left1\"><p><img src=\"immagini/phone.png\" width = 20px;> +96 554 354 3012 </p></div><div class = \"left1\"><p><img src=\"immagini/mail.png\" width = 20px;> <a href=\"mailto:hege@example.com\">C&Rgmail@gmail.com</a></p> </p></div></div><div class = \"div-footer-right\"><div class =\"right1\"><input type=\"text\" id=\"fname\" name=\"fname\" class = \"email\" placeholder=\"Inserire l'email\"><br><br></div><div class=\"right2\"><button class=\"bottone\">Invia</button></div></div></div></footer></body></html>" << endl;
+    ListaDolci.close();
+}
+
+//Funzione scrittura Ordinazioni html
+static void htmlIOrdinazioni(fstream& ListaDolci) {
+    string ordini = "ordini.html";
+    remove(ordini.c_str());
+    ListaDolci.open(ordini, ios::out | ios::app);
+    ListaDolci << "<!DOCTYPE html><html><head><title>Ordinazioni</title><link rel=\"shortcut icon\" href=\"immagini/favicon.ico\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel=\"stylesheet\" href=\"https://use.fontawesome.com/releases/v5.15.4/css/all.css\" integrity=\"sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm\" crossorigin=\"anonymous\"/><link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css\"><link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\"><link rel=\"stylesheet\" href=\"menuStyle.css\" type=\"text/css\"></head><body><nav class=\"sticky\"><input type=\"checkbox\" id=\"check\"><label for=\"check\" class=\"check-button\"><i class=\"fas fa-bars\"></i></label><div class=\"div-logo\"><a href=\"homepage.html\"><img src=\"immagini/logo.png\" alt=\"logo\"></a></div><ul><li><a href=\"menu.html\" target=\"_blank\" class=\"a-elementi\"> Menu</a></li><li><a href=\"ordini.html\" target=\"_blank\" class=\"a-elementi\">Ordinazioni</a></li><li><a href=\"dispensa.html\"target=\"_blank\" class=\"a-elementi\">Dispensa</a></li><li><a href=\"spesa.html\"target=\"_blank\" class=\"a-elementi\">Spesa</a></li><li><a href=\"homepage.html#orari\" class=\"a-elementi\">Orari</a></li><li><a href=\"homepage.html#vieniatrovarci\" class=\"a-elementi\">Vieni a trovarci</a></li><li><a href=\"homepage.html#contatti\" class=\"a-elementi\">Contatti</a></li></ul></nav><div class=\"div-corpo-ordinazioni\"><div class=\"classedeldiv\"><h4>Ordinazioni</h4><section class=\"sectionPost\"><div class=\"post-left\"><div class=\"post-it\">" << endl;
+    ListaDolci.close();
+}
+static void htmlFOrdinazioni(fstream& ListaDolci) {
+    string ordini = "ordini.html";
+    ListaDolci.open(ordini, ios::out | ios::app);
+    ListaDolci << "</div></section></div></div><footer class = \"footer\" id=\"contatti\"><div class=\"container\"><div class = \"div-footer-left\"><div class = \"left1\"><p><img src=\"immagini/pin.png\" width = 20px;> VQJG+4F4, Addis Abeba, Etiopia </p></div><div class = \"left1\"><p><img src=\"immagini/phone.png\" width = 20px;> +96 554 354 3012 </p></div><div class = \"left1\"><p><img src=\"immagini/mail.png\" width = 20px;> <a href=\"mailto:hege@example.com\">C&Rgmail@gmail.com</a></p> </p></div></div><div class = \"div-footer-right\"><div class =\"right1\"><input type=\"text\" id=\"fname\" name=\"fname\" class = \"email\" placeholder=\"Inserire l'email\"><br><br></div><div class=\"right2\"><button class=\"bottone\">Invia</button></div></div></div></footer></body></html>" << endl;
     ListaDolci.close();
 }
 
@@ -257,7 +286,7 @@ static int Contatore() {
     fstream reader;
     string line;
     int contatore = 0;
-    reader.open("Dispensa.csv", ios::in);
+    reader.open("Dispensa2.csv", ios::in);
     while (getline(reader, line))
     {
         contatore++;
@@ -266,7 +295,7 @@ static int Contatore() {
 }
 static void SottrazioneDispensa(int array[], string array2[]) {
     string line;
-    fstream reader, writer, writer2;
+    fstream reader, writer, writer2, writer3;
     string pathDispensa = "Dispensa2.csv", sottostringa3;
     int controllo = 0, indice = 0, newNum = 0, num, nRighe = Contatore();
     writer.open("DispensaApp.csv", ios::out);
@@ -302,6 +331,10 @@ static void SottrazioneDispensa(int array[], string array2[]) {
                     writer2.open("ListaSpesa.csv", ios::out | ios::app);
                     writer2 << ingrediente << " " << newNum * -1 << ";" << endl;
                     writer2.close();
+                    writer3.open("spesa.html", ios::out | ios::app);
+                    writer3 << "<li> " << ingrediente << " " << newNum * -1 << ";" << " </li>" << endl;
+                    writer3.close();
+                   
                 }
                 controllo = 0;
                 break;
@@ -368,13 +401,13 @@ static void Spesa() {
     fstream reader, writer, reader2, writer2;
     srand(time(NULL));
     int min = 2000, max = 5000, indice = 0, indice2 = 0, contatore = 0, nRighe = Contatore();
-    string pathDispensa = "Dispensa.csv", line, ingredienteSpesa, ingredienteDispensa, unità, array[100], array2[100];
+    string pathDispensa = "Dispensa2.csv", line, ingredienteSpesa, ingredienteDispensa, unità, array[100], array2[100];
     reader.open("ListaSpesa.csv", ios::in);
     while (getline(reader, line)) {
         ingredienteSpesa = line.substr(0, line.find(" "));
         array2[indice2] = ingredienteSpesa;
         indice2++;
-        reader2.open("Dispensa.csv", ios::in);
+        reader2.open("Dispensa2.csv", ios::in);
         while (getline(reader2, line)) {
             ingredienteDispensa = line.substr(0, line.find(" "));
             int inizio = line.find(" ");
@@ -402,7 +435,7 @@ static void Spesa() {
     reader.close();
 
     writer.open("DispensaAppApp.csv", ios::out);
-    reader.open("Dispensa.csv", ios::in);
+    reader.open("Dispensa2.csv", ios::in);
         while (getline(reader, line))
         {
             string ingrediente = line.substr(0, line.find(" "));
@@ -424,16 +457,19 @@ static void Spesa() {
     }
     reader.close();
     writer.close();
-    Sostituzione("DispensaAppApp.csv", "Dispensa.csv");
+    Sostituzione("DispensaAppApp.csv", "Dispensa2.csv");
 }
 
 
 static void StampaProcedimento(string dolceOrdinato, fstream& ricetteOrdini, string pathTemp, string pathOrdine)
 {
     string line, sep = ";", ingpath = "Ingredienti.csv", ricpath = "RicettarioGenerale.csv";
-    fstream reader, readering;
+    fstream reader, readering, writer;
+    int controllo = 0;
+    string stringa;
     cout << "Ingredienti:" << endl << endl;
     readering.open(pathTemp, ios::in);
+    writer.open("ordini.html", ios::out | ios::app);
     while (getline(readering, line))
     {
         if (line.find(dolceOrdinato) != string::npos)
@@ -445,13 +481,18 @@ static void StampaProcedimento(string dolceOrdinato, fstream& ricetteOrdini, str
                 string sottostringa = line.substr(inizio + 1, fine - inizio - 1); // Estrae la sottostringa tra i due caratteri ";"
                 if (sottostringa.find("1.") != string::npos) {
                     cout << endl << "Procedimenti: " << endl << endl;
+                    controllo = 1;
                 }
                 cout << sottostringa << endl;
+                stringa += " " + sottostringa;
                 inizio = fine;
-
+            }
+            if (controllo == 1) {
+                writer << "<div class=\"post-it\"><p class =\"post taped\"><strong>" << dolceOrdinato << "</strong><br>" << stringa << "</p></div> ";
             }
         }
     }
+    writer.close();
     readering.close();
     _getch();
     reader.close();
@@ -468,10 +509,11 @@ int main()
     int array[100];
     int contatore = 0;
     string dolce, nuovoDolce, line;
-    string path = "menù.html", pathTemp = "Menu.csv", pathApp = "ListaDolciApp.csv", pathOrdine = "RicetteOrdine.csv", pathDispensa = "Dispensa2.csv";
+    string path = "menu.html", pathTemp = "Menu.csv", pathApp = "ListaDolciApp.csv", pathOrdine = "RicetteOrdine.csv", pathDispensa = "Dispensa2.csv";
     fstream ListaDolci, ListaDolciTemp, reader, ricetteOrdini, writer;
     do {
         system("CLS");
+        
         cout << "1 - Aggiunta dolce\n2 - Ordinazione\n3 - Elimina dolce\n4 - Modifica dolce\n5 - Visualizza Dispensa\n6 - Fai la spesa\n0 - Uscita\n" << endl;
         cout << "Inserire la scelta: ";
         cin >> scelta;
@@ -487,15 +529,15 @@ int main()
             cout << "Inserire il dolce: ";
             cin >> dolce;
             dolce[0] = toupper(dolce[0]);
-            htmlI(ListaDolci, path);
+            htmlIMenu(ListaDolci, path);
             htmlIDispensa(ListaDolci);
             AggiuntaMenu(dolce, dim, writer, reader, path, pathTemp, pathDispensa);
             htmlFDispensa(ListaDolci);
-            htmlF(ListaDolci, path);
-
+            htmlFMenu(ListaDolci, path);
             break;
         case 2:
             remove("RicetteOrdine.csv");
+            htmlIOrdinazioni(ListaDolci);
             do
             {
                 system("CLS");
@@ -513,10 +555,12 @@ int main()
                     cout << "Inserire la quantità di dolci: ";
                     cin >> q;
                     system("CLS");
+                    
+                    htmlISpesa(ListaDolci);
                     Ordinazione(dolce, q, pathTemp);
                     StampaProcedimento(dolce, ricetteOrdini, pathTemp, pathOrdine);
+                    htmlFSpesa(ListaDolci);
                 }
-            
                 system("CLS");
                 cout << "Inserire un altro dolce? (Y/N) ";
                 cin >> uscita;
@@ -528,6 +572,7 @@ int main()
                     uscita = toupper(uscita);
                 }
             } while (uscita != 'N');
+            htmlFOrdinazioni(ListaDolci);
             break;
         case 3:
             system("CLS");
@@ -546,7 +591,6 @@ int main()
                     Sostituzione(pathApp, pathTemp);
                 }
             } while (r == -1);
-            
             break;
         case 4:
             system("CLS");
@@ -571,7 +615,7 @@ int main()
             break;
         case 5:
             system("CLS");
-            reader.open("Dispensa.csv", ios::in);
+            reader.open("Dispensa2.csv", ios::in);
             cout << "Dispensa: " << endl << endl;
             while (getline(reader, line)) {
                 cout << line << endl;
@@ -580,6 +624,8 @@ int main()
             break;
         case 6:
             Spesa();
+            htmlISpesa(ListaDolci);
+            htmlFSpesa(ListaDolci);
             remove("ListaSpesa.csv");
             break;
         }
