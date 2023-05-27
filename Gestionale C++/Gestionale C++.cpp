@@ -42,7 +42,7 @@ static int Ricerca(string nome, string filePath)
 
 static void AggiuntaMenu(string dolceOrdinato, int& dim, fstream& writer, fstream& reader, string path, string pathTemp, string pathDispensa)
 {
-    string line, line2, split, sottostringaUnita, ingrediente, sottostringaQuantita;
+    string line, line2, split, sottostringaUnita, ingrediente, sottostringaQuantita, sottostringa3;
     int N, scelta, controllo = 0, min = 2000, max = 5000, uscita = 0;
     srand(time(NULL));
 
@@ -98,7 +98,7 @@ static void AggiuntaMenu(string dolceOrdinato, int& dim, fstream& writer, fstrea
                     controllo += 1;
             }
             if (controllo == 0 && scelta == 0)
-                dispensa << endl << p.ingrediente[i - 1] << " " << (rand() % (100 - 10 + 1)) + 10;
+                dispensa << endl << p.ingrediente[i - 1] << " " << (rand() % (100 - 10 + 1)) + 10 << ";";
             else if (controllo == 0 && scelta == 1)
                 dispensa << endl << p.ingrediente[i - 1] << " " << (rand() % (max - min + 1)) + min << " g;";
             else if (controllo == 0 && scelta == 2)
@@ -134,32 +134,19 @@ static void AggiuntaMenu(string dolceOrdinato, int& dim, fstream& writer, fstrea
 
         //ESTRAZIONE DEL DOLCE SU FILE HTML
         writer.open("dispensa.html", ios::out | ios::app);
-        reader.open(pathTemp, ios::in);
+        reader.open("Dispensa2.csv", ios::in);
         while (getline(reader, line))
         {
-            int inizio = line.find(";"); // Trova il primo carattere ";" nella riga
-            while (inizio != string::npos)
-            {
-                int fine = line.find(";", inizio + 1); // Trova il prossimo carattere ";" nella riga
-                string sottostringa = line.substr(inizio + 1, fine - inizio - 1); // Estrae la sottostringa tra i due caratteri ";"
-                if (sottostringa.find("1.") != string::npos) {
-                    break;
+            string split = line.substr(0, line.find(" "));
+            int inizio2 = line.find(" ");
+            int fine2 = line.find(" ", inizio2 + 1);
+            string newQuantita = line.substr(inizio2 + 1, fine2 - inizio2 - 1);
+                if (fine2 != -1) {
+                    sottostringa3 = line.substr(fine2 + 1);
+                    writer << "<tr> <td class = \"text-left\"> " << split << "</td><td class = \"text-left\"> " << newQuantita << " " << sottostringa3 << "</td> </tr > " << endl;
                 }
-                else {
-                    ingrediente = line.substr(inizio + 1, sottostringa.find(" "));
-                    int inizio2 = sottostringa.find(" ");
-                    int fine2 = sottostringa.find(" ", inizio2 + 1);
-                    sottostringaQuantita = sottostringa.substr(inizio2 + 1, fine2 - inizio2 - 1);
-                    if (fine2 != -1) {
-                        sottostringaUnita = sottostringa.substr(fine2 + 1);
-                        writer << "<tr> <td class = \"text-left\"> " << ingrediente << "</td><td class = \"text-left\"> " << sottostringaQuantita << " " << sottostringaUnita << "</td> </tr > " << endl;
-                    }
-                    else {
-                        writer << "<tr> <td class = \"text-left\"> " << ingrediente << "</td><td class = \"text-left\"> " << sottostringaQuantita<< "</td> </tr > " << endl;
-                    }
-                }
-                inizio = fine;
-            }
+                else
+                    writer << "<tr> <td class = \"text-left\"> " << split << "</td><td class = \"text-left\"> " << newQuantita << "</td> </tr > " << endl;
         }
         reader.close();
         writer.close();

@@ -1,6 +1,0 @@
-
-Torta-al-limone;Amido-di-mais 120 g;Farina 120 g;Burro 250 g;Zucchero-semolato 250 g;Uova 4;Lievito-in-polvere 16 g;Succo-di-limone 75 ml;Scorza-di-limone 2;Zucchero-a-velo 30 g;
-Pastiera-napoletana;Farina 250 g;Strutto 50 g;Burro 50 g;Zucchero 80 g;Miele-millefiori 20 g;Uova 1;Latte-intero 40 g;Scorza-di-limone 1;Scorza-d'arancia 1;Sale-fino 5 g;Grano-cotto 200 g;Latte 100 ml;Burro 25 g;Ricotta-di-pecora 200 g;Zucchero 180 g;Cedro-candito 50 g;Miele-millefiori 20 g;Uova 2;Tuorli 1;
-Panna-cotta;Panna-fresca-liquida 500 g;Baccello-di-vaniglia 1;Zucchero 80 g;Gelatina-in-fogli 8 g;
-Crostata-di-fragole;Farina 250 g;Burro 125 g;Zucchero-a-velo 100 g;Uova 1;Scorza-di-limone 1;Tuorli 6;Amido-di-mais 45 g;Zucchero 140 g;Latte 400 ml;Panna-fresca-liquida 100 ml;Baccello-di-vaniglia 1;Zucchero 100 g;Acqua 100 ml;Succo-di-limone 1;Fragole 600 g;
-Strudel-di-pere-e-cioccolato;Pasta-Sfoglia 1;Pere-Williams 350 g;Cioccolato-fondente 75 g;Zucchero-di-canna 30 g;Pangrattato 50 g;Burro 40 g;Mandorle-pelate 25 g;Cannella-in-polvere 5 g;Zenzero-in-polvere 3 g;
