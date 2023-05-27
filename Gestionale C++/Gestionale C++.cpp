@@ -335,6 +335,24 @@ static void SottrazioneDispensa(int array[], string array2[]) {
     }
     reader.close();
     writer.close();
+
+    writer.open("dispensa.html", ios::out | ios::app);
+    reader.open("Dispensa2.csv", ios::in);
+    while (getline(reader, line))
+    {
+        string split = line.substr(0, line.find(" "));
+        int inizio2 = line.find(" ");
+        int fine2 = line.find(" ", inizio2 + 1);
+        string newQuantita = line.substr(inizio2 + 1, fine2 - inizio2 - 1);
+        if (fine2 != -1) {
+            sottostringa3 = line.substr(fine2 + 1);
+            writer << "<tr> <td class = \"text-left\"> " << split << "</td><td class = \"text-left\"> " << newQuantita << " " << sottostringa3 << "</td> </tr > " << endl;
+        }
+        else
+            writer << "<tr> <td class = \"text-left\"> " << split << "</td><td class = \"text-left\"> " << newQuantita << "</td> </tr > " << endl;
+    }
+    reader.close();
+    writer.close();
     Sostituzione("DispensaApp.csv", "Dispensa2.csv");
 }
 static void Ordinazione(string dolce, int quantita, string pathTemp) {
@@ -448,7 +466,7 @@ static void Spesa() {
 }
 
 
-static void StampaProcedimento(string dolceOrdinato, fstream& ricetteOrdini, string pathTemp, string pathOrdine)
+static void StampaProcedimento(string dolceOrdinato, fstream& ricetteOrdini, string pathTemp, string pathOrdine, int q)
 {
     string line, sep = ";", ingpath = "Ingredienti.csv", ricpath = "RicettarioGenerale.csv";
     fstream reader, readering, writer;
@@ -457,6 +475,7 @@ static void StampaProcedimento(string dolceOrdinato, fstream& ricetteOrdini, str
     cout << "Ingredienti:" << endl << endl;
     readering.open(pathTemp, ios::in);
     writer.open("ordini.html", ios::out | ios::app);
+    writer << "<div class=\"post-it\"><p class =\"post taped\"><strong>" << dolceOrdinato << " x " << q << "</strong><br>" << "Ingredienti: " << endl;
     while (getline(readering, line))
     {
         if (line.find(dolceOrdinato) != string::npos)
@@ -468,17 +487,15 @@ static void StampaProcedimento(string dolceOrdinato, fstream& ricetteOrdini, str
                 string sottostringa = line.substr(inizio + 1, fine - inizio - 1); // Estrae la sottostringa tra i due caratteri ";"
                 if (sottostringa.find("1.") != string::npos) {
                     cout << endl << "Procedimenti: " << endl << endl;
-                    controllo = 1;
+                    writer << endl << endl << "Procedimenti: " << endl;
                 }
                 cout << sottostringa << endl;
-                stringa += " " + sottostringa;
+                writer  << sottostringa << "; ";
                 inizio = fine;
-            }
-            if (controllo == 1) {
-                writer << "<div class=\"post-it\"><p class =\"post taped\"><strong>" << dolceOrdinato << "</strong><br>" << stringa << "</p></div> ";
             }
         }
     }
+    writer << "</p></div> ";
     writer.close();
     readering.close();
     _getch();
@@ -544,8 +561,10 @@ int main()
                     system("CLS");
                     
                     htmlISpesa(ListaDolci);
+                    htmlIDispensa(ListaDolci);
                     Ordinazione(dolce, q, pathTemp);
-                    StampaProcedimento(dolce, ricetteOrdini, pathTemp, pathOrdine);
+                    StampaProcedimento(dolce, ricetteOrdini, pathTemp, pathOrdine, q);
+                    htmlFDispensa(ListaDolci);
                     htmlFSpesa(ListaDolci);
                 }
                 system("CLS");
