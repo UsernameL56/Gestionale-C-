@@ -282,7 +282,7 @@ static int Contatore() {
 }
 static void SottrazioneDispensa(int array[], string array2[]) {
     string line;
-    fstream reader, writer, writer2, writer3;
+    fstream reader, reader2, writer, writer2, writer3;
     string pathDispensa = "Dispensa2.csv", sottostringa3;
     int controllo = 0, indice = 0, newNum = 0, num, nRighe = Contatore();
     writer.open("DispensaApp.csv", ios::out);
@@ -318,9 +318,6 @@ static void SottrazioneDispensa(int array[], string array2[]) {
                     writer2.open("ListaSpesa.csv", ios::out | ios::app);
                     writer2 << ingrediente << " " << newNum * -1 << ";" << endl;
                     writer2.close();
-                    writer3.open("spesa.html", ios::out | ios::app);
-                    writer3 << "<li> " << ingrediente << " " << newNum * -1 << ";" << " </li>" << endl;
-                    writer3.close();
                    
                 }
                 controllo = 0;
@@ -335,6 +332,15 @@ static void SottrazioneDispensa(int array[], string array2[]) {
     }
     reader.close();
     writer.close();
+
+    reader2.open("ListaSpesa.csv");
+    while (getline(reader2, line)) {
+        writer3.open("spesa.html", ios::out | ios::app);
+        writer3 << "<li> " << line << " </li>" << endl;
+        writer3.close();
+    }
+    reader2.close();
+        
 
     writer.open("dispensa.html", ios::out | ios::app);
     reader.open("Dispensa2.csv", ios::in);
@@ -540,7 +546,6 @@ int main()
             htmlFMenu(ListaDolci, path);
             break;
         case 2:
-            remove("RicetteOrdine.csv");
             htmlIOrdinazioni(ListaDolci);
             do
             {
